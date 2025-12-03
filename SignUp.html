@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>ALA</title>
+  <title>ALA/Sing-Up</title>
   <link rel="stylesheet" type="text/css" href="CRUD-Styles.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -16,10 +16,12 @@
             <h2>Create Your Account!</h2>
         </div>
         <div class="user-info">
-            <input type="text" placeholder="UserID" id="userID" required>
-            <input type="email" placeholder="Email" id="email" required>
-            <input type="text" placeholder="Password" id="p-word" required>
-            <input type="text" placeholder="Confirm Password" id="p-word" required>
+            <form>
+                <input type="text" placeholder="UserID" id="userID" required method="post">
+                <input type="email" placeholder="Email" id="email" required method="post">
+                <input type="text" placeholder="Password" id="p-word" required method="post">
+                <input type="text" placeholder="Confirm Password" id="p-word" required method="post">
+            </form>
         </div>
         <button>Sign In</button>
     </section>
