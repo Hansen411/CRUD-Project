@@ -19,39 +19,126 @@
   
   </header>
   <section class="prof-info">
-  <section class="profile-left">
-    <div class="left-top">
-      <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="default profile picture">      <h2>Employee Name</h2>
-    </div>
-    <hr>
-    <div class="left-bottom">
-      <h3>Employee Information:</h3>
-      <p><strong>Status: </strong>Active</p>
-      <p><strong>Department:</strong> [name]</p>
-      <p><strong>Email:</strong>
-    </div>
-  </section>
-  <section class="profile-right">
-    <div class="right-card">
-      <h3>Personal Information:</h3>
-      <p><strong>Phone:</strong> (123) 456-7890</p>
-      <p><strong>Address:</strong> 123 Main St, City, Country</p>
-      <p><strong>Date of Birth:</strong> January 1, 1990</p>      
-    </div>
-    <div class="right-card">
-      <h3>Emergency Contact:</h3>
-      <p><strong>Name:</strong> Jane Doe</p>
-      <p><strong>Relationship:</strong> Spouse</p>
-      <p><strong>Phone:</strong> (098) 765-4321</p>
-    </div>
-    <div class="right-card">
-      <h3>Payment Information:</h3>
-      <p>insert template payment information</p>
-    </div>
-  </section>
+    <section class="profile-left">
+
+      <div class="left-top">
+        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="default profile picture">      <h2>Employee Name</h2>
+      </div>
+
+      <hr>
+
+      <div class="left-bottom">
+        <h3>Employee Information:</h3>
+        
+        <p><strong>Status: </strong>Active</p>
+        <p><strong>Department:</strong> [name]</p>
+        <p><strong>Email:</strong>
+
+      </div>
+    </section>
+
+    <section class="profile-right">
+      <div class="right-card">
+        <div class="card-edit">
+          <h3>Personal Information:</h3>
+          
+            
+          
+      </div>
+        <p><strong>Name: </strong>Jane Doe</p>
+        <p><strong>Date of Birth:</strong> 01/01/1990</p>
+        <p><strong>Address:</strong> 123 Main St, City, State, ZIP</p>
+        <p><strong>Phone:</strong> 555-6789</p>
+
+
+      </div>
+      <div class="right-card">
+        <div class="card-edit">
+          <h3>Emergency Contact:</h3>
+          <div class="button-group">
+            <button id="edit-btn">Edit</button>
+            <button id="save-btn" class="hidden">Save</button>
+            <button id="cancel-btn" class="hidden">Cancel</button>
+          </div>
+        </div>
+        <div id="info-view">
+          <p><strong>Name:</strong> <span id="name-text">John Doe</span></p>
+          <p><strong>Relationship:</strong> <span id="rel-text">Spouse</span></p>
+          <p><strong>Email:</strong> <span id="email-text">john@example.com</span></p>
+          <p><strong>Phone:</strong> <span id="phone-text">555-1234</span></p> 
+        </div>
+
+        <div id="info-edit" class="hidden">
+            <label>Name: <input type="text" id="name-input"></label><br><br>
+            <label>Relationship: <input type="text" id="rel-input"></label><br><br>
+            <label>Email: <input type="text" id="email-input"></label><br><br>
+            <label>Phone: <input type="text" id="phone-input"></label><br><br>
+        </div>
+        
+      </div>
+      <div class="right-card">
+        <h3>Payment Information:</h3>
+        <p>insert template payment information</p>
+      </div>
+    </section>
   </section>
 
 
+
+
+<script>
+      const view = document.getElementById("info-view");
+    const edit = document.getElementById("info-edit");
+
+    const nameText = document.getElementById("name-text");
+    const emailText = document.getElementById("email-text");
+    const phoneText = document.getElementById("phone-text");
+
+    const nameInput = document.getElementById("name-input");
+    const emailInput = document.getElementById("email-input");
+    const phoneInput = document.getElementById("phone-input");
+
+    const editBtn = document.getElementById("edit-btn");
+    const saveBtn = document.getElementById("save-btn");
+    const cancelBtn = document.getElementById("cancel-btn");
+
+    editBtn.onclick = () => {
+        // Load current values into inputs
+        nameInput.value = nameText.textContent;
+        emailInput.value = emailText.textContent;
+        phoneInput.value = phoneText.textContent;
+
+        view.classList.add("hidden");
+        edit.classList.remove("hidden");
+
+        editBtn.classList.add("hidden");
+        saveBtn.classList.remove("hidden");
+        cancelBtn.classList.remove("hidden");
+    };
+
+    saveBtn.onclick = () => {
+        // Save changes
+        nameText.textContent = nameInput.value;
+        emailText.textContent = emailInput.value;
+        phoneText.textContent = phoneInput.value;
+
+        view.classList.remove("hidden");
+        edit.classList.add("hidden");
+
+        saveBtn.classList.add("hidden");
+        cancelBtn.classList.add("hidden");
+        editBtn.classList.remove("hidden");
+    };
+
+    cancelBtn.onclick = () => {
+        view.classList.remove("hidden");
+        edit.classList.add("hidden");
+
+        saveBtn.classList.add("hidden");
+        cancelBtn.classList.add("hidden");
+        editBtn.classList.remove("hidden");
+    };
+</script>
 
 
 </body>
