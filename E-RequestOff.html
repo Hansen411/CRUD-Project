@@ -26,12 +26,228 @@
             </div>
         </nav>
     </section>
+
     <section class="dashboard-content">
         <div class="dashboard-message">
             <h1>Your Shift Requests</h1>
             <p>Review and manage your shift requests below.</p>
         </div>
         <!-- Content for shift requests would go here -->
+       
+        <div>
+            <div class="employee-requests">
+                <div class="request-summary">
+                    <h2>Your Time Off Requests</h2>
+                    <div>
+                    <table>
+                        <tr>
+                            <th>Approved Requests</th>
+                            <th>Denied Requests</th>
+                            <th>Pending Requests</th>
+                        </tr>
+                        <tr>
+                            <td id="approved-count">0</td>
+                            <td id="denied-count">0</td>
+                            <td id="pending-count">0</td> 
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="all-requests">
+                    <div class="all-requests-header">
+                        <h3>All Time Off Requests</h3>
+                        <button id="request-button">Make Request</button>
+                    </div>
+                    
+                    <div class="make-request">
+                        <form id="request-form">
+                            <label for="time-off-type">Time Off Type:</label>
+                                <select id="time-off-type" name="time-off-type" required>
+                                    <option value="vacation">Vacation</option>
+                                    <option value="sick">Sick Leave</option>
+                                    <option value="personal">Personal Leave</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            <div>
+                                <label for="start-date">Start Date:</label>
+                                <input type="date" id="start-date" name="start-date" required>
+
+                                <label for="end-date">End Date:</label>
+                                <input type="date" id="end-date" name="end-date" required>
+                            </div>
+                            <label for="Notes">Notes:</label>
+                            <textarea id="Notes" name="reason" rows="4" ></textarea>
+
+                            <button type="submit">Submit Request</button>
+                        </form>
+                    </div>
+                    
+                    <hr>
+                    <table id="request-table">
+                        <thead>
+                            <tr>
+                                <th>Time Off Type</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                                <th>----------</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        
+<script>
+// ------------------------
+// LOAD SAVED REQUESTS ON PAGE LOAD
+// ------------------------
+document.addEventListener("DOMContentLoaded", function () {
+    loadRequestsFromStorage();
+    updateCounters();
+});
+
+
+// ------------------------
+// TOGGLE FORM VISIBILITY
+// ------------------------
+document.getElementById("request-button").addEventListener("click", function () {
+    const formSection = document.querySelector(".make-request");
+    
+    if (formSection.style.display === "none" || formSection.style.display === "") {
+        formSection.style.display = "block";
+    } else {
+        formSection.style.display = "none";
+    }
+});
+
+
+// ------------------------
+// SUBMIT REQUEST
+// ------------------------
+document.getElementById("request-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const type = document.getElementById("time-off-type").value;
+    const start = document.getElementById("start-date").value;
+    const end = document.getElementById("end-date").value;
+    const notes = document.getElementById("Notes").value;
+
+    const newRequest = {
+        id: Date.now(), 
+        type,
+        start,
+        end,
+        status: "Pending",
+        notes
+    };
+
+    saveRequestToLocalStorage(newRequest);
+    addRowToTable(newRequest);
+    updateCounters();
+
+    document.getElementById("request-form").reset();
+    document.querySelector(".make-request").style.display = "none";
+});
+
+
+// ------------------------
+// SAVE REQUEST
+// ------------------------
+function saveRequestToLocalStorage(request) {
+    const requests = JSON.parse(localStorage.getItem("requests")) || [];
+    requests.push(request);
+    localStorage.setItem("requests", JSON.stringify(requests));
+}
+
+
+// ------------------------
+// LOAD REQUESTS
+// ------------------------
+function loadRequestsFromStorage() {
+    const requests = JSON.parse(localStorage.getItem("requests")) || [];
+    requests.forEach(req => addRowToTable(req));
+}
+
+
+// ------------------------
+// ADD ROW TO TABLE (WITH DELETE BUTTON)
+// ------------------------
+function addRowToTable(request) {
+    const tableBody = document.querySelector("#request-table tbody");
+
+    const row = document.createElement("tr");
+    row.setAttribute("data-id", request.id);
+
+    row.innerHTML = `
+        <td>${request.type}</td>
+        <td>${request.start}</td>
+        <td>${request.end}</td>
+        <td>${request.status}</td>
+        <td>${request.notes}</td>
+        <td><button class="delete-btn" data-id="${request.id}">Delete</button></td>
+    `;
+
+    tableBody.appendChild(row);
+
+    // Attach delete event
+    row.querySelector(".delete-btn").addEventListener("click", function () {
+        deleteRequest(request.id);
+    });
+}
+
+
+// ------------------------
+// DELETE REQUEST
+// ------------------------
+function deleteRequest(id) {
+    // Remove from localStorage
+    let requests = JSON.parse(localStorage.getItem("requests")) || [];
+    requests = requests.filter(req => req.id !== id);
+    localStorage.setItem("requests", JSON.stringify(requests));
+
+    // Remove row from table
+    const row = document.querySelector(`tr[data-id="${id}"]`);
+    if (row) row.remove();
+
+    // Update counters
+    updateCounters();
+}
+
+
+// ------------------------
+// UPDATE SUMMARY COUNTERS
+// ------------------------
+function updateCounters() {
+    const requests = JSON.parse(localStorage.getItem("requests")) || [];
+
+    let approved = 0;
+    let denied = 0;
+    let pending = 0;
+
+    requests.forEach(req => {
+        if (req.status === "Approved") approved++;
+        else if (req.status === "Denied") denied++;
+        else pending++;
+    });
+
+    document.getElementById("approved-count").textContent = approved;
+    document.getElementById("denied-count").textContent = denied;
+    document.getElementById("pending-count").textContent = pending;
+}
+</script>
+
+
+
+
+
+
     </section>
+
     </div>
+</body>
+
 </html>
