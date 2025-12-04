@@ -14,13 +14,13 @@
             <h2>Welcome to ALA!</h2>
         </div>
         <div class="user-info">
-            <form>
-               <input type="text" placeholder="UserID" id="userID" required method="post">
-               <input type="text" placeholder="Password" id="p-word" required method="post"> 
+            <form method="post">
+               <input type="text" placeholder="UserID" id="userID" required>
+               <input type="password" placeholder="Password" id="p-word" required> 
             </form>
             
         </div>
-        <button type="submit">Log In</button>
+        <button type="submit" id="login-btn">Log In</button>
         <div class="sign-up">
             <p>Don't have an account?</p>
             <a href="SignUp.html">Sign up </a>
@@ -30,6 +30,37 @@
     <footer>
         <p>Copyright 2025 - ALA</p>
     </footer>
+
+<script>
+document.getElementById("login-btn").addEventListener("click", function () {
+    
+    // Get inputs
+    const userID = document.getElementById("userID").value.trim();
+    const password = document.getElementById("p-word").value.trim();
+
+    // Load users from localStorage
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Find matching user
+    const validUser = users.find(user => 
+        user.userID === userID && user.password === password
+    );
+
+    // If user exists, log them in
+    if (validUser) {
+        // Save logged-in user
+        localStorage.setItem("activeUser", JSON.stringify(validUser));
+
+        alert("Login successful!");
+        window.location.href = "employee-dash.html";  
+    }
+    else {
+        alert("Invalid UserID or Password.");
+    }
+});
+</script>
+
+
 </body>
 
 </html>
