@@ -87,58 +87,100 @@
 
 
 <script>
-      const view = document.getElementById("info-view");
-    const edit = document.getElementById("info-edit");
+// ------------------------------
+// ELEMENT REFERENCES
+// ------------------------------
+const view = document.getElementById("info-view");
+const edit = document.getElementById("info-edit");
 
-    const nameText = document.getElementById("name-text");
-    const emailText = document.getElementById("email-text");
-    const phoneText = document.getElementById("phone-text");
+const nameText = document.getElementById("name-text");
+const relText = document.getElementById("rel-text");
+const emailText = document.getElementById("email-text");
+const phoneText = document.getElementById("phone-text");
 
-    const nameInput = document.getElementById("name-input");
-    const emailInput = document.getElementById("email-input");
-    const phoneInput = document.getElementById("phone-input");
+const nameInput = document.getElementById("name-input");
+const relInput = document.getElementById("rel-input");
+const emailInput = document.getElementById("email-input");
+const phoneInput = document.getElementById("phone-input");
 
-    const editBtn = document.getElementById("edit-btn");
-    const saveBtn = document.getElementById("save-btn");
-    const cancelBtn = document.getElementById("cancel-btn");
+const editBtn = document.getElementById("edit-btn");
+const saveBtn = document.getElementById("save-btn");
+const cancelBtn = document.getElementById("cancel-btn");
 
-    editBtn.onclick = () => {
-        // Load current values into inputs
-        nameInput.value = nameText.textContent;
-        emailInput.value = emailText.textContent;
-        phoneInput.value = phoneText.textContent;
+// ------------------------------
+// LOAD SAVED DATA ON PAGE LOAD
+// ------------------------------
+document.addEventListener("DOMContentLoaded", function () {
+    const savedData = JSON.parse(localStorage.getItem("emergencyContact"));
 
-        view.classList.add("hidden");
-        edit.classList.remove("hidden");
+    if (savedData) {
+        nameText.textContent = savedData.name;
+        relText.textContent = savedData.relationship;
+        emailText.textContent = savedData.email;
+        phoneText.textContent = savedData.phone;
+    }
+});
 
-        editBtn.classList.add("hidden");
-        saveBtn.classList.remove("hidden");
-        cancelBtn.classList.remove("hidden");
+// ------------------------------
+// EDIT MODE
+// ------------------------------
+editBtn.onclick = () => {
+    // Load current values into input fields
+    nameInput.value = nameText.textContent;
+    relInput.value = relText.textContent;
+    emailInput.value = emailText.textContent;
+    phoneInput.value = phoneText.textContent;
+
+    view.classList.add("hidden");
+    edit.classList.remove("hidden");
+
+    editBtn.classList.add("hidden");
+    saveBtn.classList.remove("hidden");
+    cancelBtn.classList.remove("hidden");
+};
+
+// ------------------------------
+// SAVE CHANGES + LOCAL STORAGE
+// ------------------------------
+saveBtn.onclick = () => {
+    // Update text fields
+    nameText.textContent = nameInput.value;
+    relText.textContent = relInput.value;
+    emailText.textContent = emailInput.value;
+    phoneText.textContent = phoneInput.value;
+
+    // Save to localStorage
+    const dataToSave = {
+        name: nameInput.value,
+        relationship: relInput.value,
+        email: emailInput.value,
+        phone: phoneInput.value
     };
 
-    saveBtn.onclick = () => {
-        // Save changes
-        nameText.textContent = nameInput.value;
-        emailText.textContent = emailInput.value;
-        phoneText.textContent = phoneInput.value;
+    localStorage.setItem("emergencyContact", JSON.stringify(dataToSave));
 
-        view.classList.remove("hidden");
-        edit.classList.add("hidden");
+    // Return to view mode
+    view.classList.remove("hidden");
+    edit.classList.add("hidden");
 
-        saveBtn.classList.add("hidden");
-        cancelBtn.classList.add("hidden");
-        editBtn.classList.remove("hidden");
-    };
+    saveBtn.classList.add("hidden");
+    cancelBtn.classList.add("hidden");
+    editBtn.classList.remove("hidden");
+};
 
-    cancelBtn.onclick = () => {
-        view.classList.remove("hidden");
-        edit.classList.add("hidden");
+// ------------------------------
+// CANCEL EDIT
+// ------------------------------
+cancelBtn.onclick = () => {
+    view.classList.remove("hidden");
+    edit.classList.add("hidden");
 
-        saveBtn.classList.add("hidden");
-        cancelBtn.classList.add("hidden");
-        editBtn.classList.remove("hidden");
-    };
+    saveBtn.classList.add("hidden");
+    cancelBtn.classList.add("hidden");
+    editBtn.classList.remove("hidden");
+};
 </script>
+
 
 
 </body>
