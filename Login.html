@@ -32,33 +32,34 @@
     </footer>
 
 <script>
-document.getElementById("login-btn").addEventListener("click", function () {
+    document.getElementById("login-btn").addEventListener("click", function () {
     
     // Get inputs
     const userID = document.getElementById("userID").value.trim();
     const password = document.getElementById("p-word").value.trim();
 
-    // Load users from localStorage
-    const users = JSON.parse(localStorage.getItem("users")) || [];
+    // Load accounts from localStorage (same key used in the signup page)
+    const accounts = JSON.parse(localStorage.getItem("accounts")) || [];
 
-    // Find matching user
-    const validUser = users.find(user => 
-        user.userID === userID && user.password === password
+    // Find matching account
+    const validUser = accounts.find(acc => 
+        acc.userID === userID && acc.password === password
     );
 
-    // If user exists, log them in
+    // If found → log in
     if (validUser) {
-        // Save logged-in user
+        // Save the logged-in user (optional)
         localStorage.setItem("activeUser", JSON.stringify(validUser));
 
         alert("Login successful!");
         window.location.href = "employee-dash.html";  
-    }
+    } 
     else {
         alert("Invalid UserID or Password.");
     }
-});
+    });
 </script>
+
 
 
 </body>

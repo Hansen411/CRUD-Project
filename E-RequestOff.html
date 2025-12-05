@@ -103,6 +103,15 @@
         
 <script>
 // ------------------------
+// LOAD ACTIVE USER
+// ------------------------
+const activeUser = JSON.parse(localStorage.getItem("activeUser"));
+if (!activeUser) {
+    window.location.href = "Login.html";
+}
+const userID = activeUser.userID;
+
+// ------------------------
 // LOAD SAVED REQUESTS ON PAGE LOAD
 // ------------------------
 document.addEventListener("DOMContentLoaded", function () {
@@ -110,20 +119,14 @@ document.addEventListener("DOMContentLoaded", function () {
     updateCounters();
 });
 
-
 // ------------------------
 // TOGGLE FORM VISIBILITY
 // ------------------------
 document.getElementById("request-button").addEventListener("click", function () {
     const formSection = document.querySelector(".make-request");
-    
-    if (formSection.style.display === "none" || formSection.style.display === "") {
-        formSection.style.display = "block";
-    } else {
-        formSection.style.display = "none";
-    }
+    formSection.style.display = 
+        formSection.style.display === "block" ? "none" : "block";
 });
-
 
 // ------------------------
 // SUBMIT REQUEST
@@ -137,7 +140,7 @@ document.getElementById("request-form").addEventListener("submit", function(even
     const notes = document.getElementById("Notes").value;
 
     const newRequest = {
-        id: Date.now(), 
+        id: Date.now(),
         type,
         start,
         end,
@@ -153,28 +156,27 @@ document.getElementById("request-form").addEventListener("submit", function(even
     document.querySelector(".make-request").style.display = "none";
 });
 
-
 // ------------------------
-// SAVE REQUEST
+// SAVE REQUEST (PER USER)
 // ------------------------
 function saveRequestToLocalStorage(request) {
-    const requests = JSON.parse(localStorage.getItem("requests")) || [];
+    const key = `requests_${userID}`;
+    const requests = JSON.parse(localStorage.getItem(key)) || [];
     requests.push(request);
-    localStorage.setItem("requests", JSON.stringify(requests));
+    localStorage.setItem(key, JSON.stringify(requests));
 }
 
-
 // ------------------------
-// LOAD REQUESTS
+// LOAD REQUESTS (PER USER)
 // ------------------------
 function loadRequestsFromStorage() {
-    const requests = JSON.parse(localStorage.getItem("requests")) || [];
+    const key = `requests_${userID}`;
+    const requests = JSON.parse(localStorage.getItem(key)) || [];
     requests.forEach(req => addRowToTable(req));
 }
 
-
 // ------------------------
-// ADD ROW TO TABLE (WITH DELETE BUTTON)
+// ADD ROW TO TABLE
 // ------------------------
 function addRowToTable(request) {
     const tableBody = document.querySelector("#request-table tbody");
@@ -193,40 +195,34 @@ function addRowToTable(request) {
 
     tableBody.appendChild(row);
 
-    // Attach delete event
     row.querySelector(".delete-btn").addEventListener("click", function () {
         deleteRequest(request.id);
     });
 }
 
-
 // ------------------------
-// DELETE REQUEST
+// DELETE REQUEST (PER USER)
 // ------------------------
 function deleteRequest(id) {
-    // Remove from localStorage
-    let requests = JSON.parse(localStorage.getItem("requests")) || [];
+    const key = `requests_${userID}`;
+    let requests = JSON.parse(localStorage.getItem(key)) || [];
     requests = requests.filter(req => req.id !== id);
-    localStorage.setItem("requests", JSON.stringify(requests));
+    localStorage.setItem(key, JSON.stringify(requests));
 
-    // Remove row from table
     const row = document.querySelector(`tr[data-id="${id}"]`);
     if (row) row.remove();
 
-    // Update counters
     updateCounters();
 }
-
 
 // ------------------------
 // UPDATE SUMMARY COUNTERS
 // ------------------------
 function updateCounters() {
-    const requests = JSON.parse(localStorage.getItem("requests")) || [];
+    const key = `requests_${userID}`;
+    const requests = JSON.parse(localStorage.getItem(key)) || [];
 
-    let approved = 0;
-    let denied = 0;
-    let pending = 0;
+    let approved = 0, denied = 0, pending = 0;
 
     requests.forEach(req => {
         if (req.status === "Approved") approved++;

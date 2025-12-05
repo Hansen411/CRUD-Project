@@ -40,12 +40,14 @@
     border-bottom: #d485bd solid 2px;
 }
 
-button {
+.user-info button {
     background-color: #2F243A;
     color: white;
     width: 100px;
     height: 35px;
-    border-radius: 5px;;
+    border-radius: 5px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .sign-up {
@@ -256,6 +258,7 @@ footer {
     flex-direction: column;
     gap:10px;
    padding-bottom: 45px;
+   
 
 }
 
@@ -372,9 +375,178 @@ footer {
     width: auto;
 }
 
+.dash-card a{
+    text-decoration: none;
+    color:black;
+}
+
+/*ADMIN REQUEST-OFF PAGE STYLES*/
+.Admin-Dash {
+    margin:0;
+    height:100%;
+   
+}
+
+.employee-requests{
+    background-color: #f4c1e0;
+    box-shadow: 0 0 5px 3px #8c6883;
+    margin:2em;
+    border-radius: 10px;
+}
+.request-summary{
+    text-align: center;
+    font-size: medium;
+}
+.employee-requests h2{
+    text-align: center;
+    padding:1em;
+    margin:0;
+}
+.employee-requests table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1em;
+    
+}
+.all-requests{
+    text-align: left;
+    background-color: white;
+    padding-left:16px;
+    padding-right:16px;
+    padding-bottom: 15px;
+    border-radius:0 0 10px 10px;
+}
+.all-requests table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-right: 10px;
+}
+.all-requests th, .all-requests td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+
+}
+.all-requests h3{
+    text-align: left;
+    padding:1em;
+    margin:0;
+}
+.all-requests hr{
+    margin-top: 0;
+    margin-left:10px;
+    margin-right: 10px;
+}
+
+.approve-btn {
+    background-color: green;
+    border:none;
+    color: white;
+    width: 80px;
+    height: 30px;
+    border-radius: 5px;;
+    margin-right: 0;
+}
+
+.decline-btn {
+    background-color: #ff4d4d;
+    border:none;
+    color: white;
+    width: 80px;
+    height: 30px;
+    border-radius: 5px;;
+    margin-left: 5px;
+}
+
+
+.all-requests-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: #d485bd solid 2px;
+    padding-bottom: 2px;
+    gap:10px;
+    margin-bottom: 10px;
+}
+.all-requests-header button {
+    background-color: #2F243A;
+    color: white;
+    width: auto;
+    height: 30px;
+    border:solid #2F243A;
+    font-size: small;
+    align-items: end;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.make-request button:hover,
+.all-requests-header button:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+
+.make-request {
+    text-align: center;
+    margin-top: 1em;
+    display:none;
+}
+.make-request form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap:15px;
+    padding-bottom: 25px;
+    padding-top: 10px;
+}
+.make-request label {
+    font-weight: bold;
+    font-size: medium;
+    display: block;
+    padding-top:10px
+}
+#time-off-type, #start-date, #end-date {
+    width: 50%;
+    height:35px;
+    margin-left: auto;
+    margin-right: auto;
+    border:none;
+    border-bottom: #d485bd solid 2px;
+}
+#Notes {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    border: #d485bd solid 2px;
+}
+
+.make-request button {
+    background-color: #2F243A;
+    color: white;
+    width: auto;
+    height: 30px;
+    border-radius: 5px;
+    margin-left: auto;
+    margin-right:auto;
+    font-weight: bold;
+
+}
+
+.delete-btn{
+    background-color: red;
+    border:none;
+    height:30px;
+    width:65px;;
+    border-radius: 5px;
+    font-weight: bold;
+    color:white;
+
+}
 
 
 
+/* Media Queries for Responsive Design */
 
 @media (min-width: 600px)
 {

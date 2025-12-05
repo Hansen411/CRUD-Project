@@ -22,20 +22,44 @@
     <section class="profile-left">
 
       <div class="left-top">
-        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="default profile picture">      <h2>Employee Name</h2>
+        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="default profile picture">      
+        <h2>ALA Profile</h2>
+
       </div>
 
       <hr>
 
       <div class="left-bottom">
         <h3>Employee Information:</h3>
-        
+        <p><strong>EmployeeID:</strong> <span id="profile-employee-id"></span></p>
         <p><strong>Status: </strong>Active</p>
-        <p><strong>Department:</strong> [name]</p>
-        <p><strong>Email:</strong>
+        <p><strong>Department:</strong> Information Science</p>
+        <p><strong>Email:</strong> <span id="profile-email"></span></p>
 
       </div>
     </section>
+
+<script>
+
+ document.addEventListener("DOMContentLoaded", function () {
+    const activeUser = JSON.parse(localStorage.getItem("activeUser"));
+
+    if (!activeUser) {
+        // If user not logged in → send back to login page
+        window.location.href = "Login.html";
+        return;
+    }
+
+    // Fill EmployeeID and Email
+    document.getElementById("profile-employee-id").textContent = activeUser.userID;
+    document.getElementById("profile-email").textContent = activeUser.email;
+});
+
+</script>
+
+
+
+
 
     <section class="profile-right">
       <div class="right-card">
