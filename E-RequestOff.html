@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>ALA/Employee-Shift-Requests</title>
+  <title>ALA/Employee-Request-Offs</title>
   <link rel="stylesheet" type="text/css" href="CRUD-Styles.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -28,11 +28,28 @@
     </section>
 
     <section class="dashboard-content">
+        <div class="mobile-nav">
+          
+            <div class="dropdown">
+                <button class="dropbtn" aria-label="Toggle menu">
+                &#9776; <!-- Hamburger icon -->
+                </button>
+                
+                <div class="dropdown-content">
+                     <a href="employee-dash.html">Dashboard</a>
+                     <a href="ProfilePage.html">Profile</a>
+                     <a href="E-ShiftRequests.html">Shift Requests</a>
+                     <a href="E-RequestOff.html">Request Offs</a>
+                     <a href="E-Payroll.html">Payroll</a>
+                     <a href="Login.html">Logout</a>
+                </div>
+            </div>
+            <h1>ALA | Request Off</h1>  
+        </div>
         <div class="dashboard-message">
             <h1>Your Shift Requests</h1>
-            <p>Review and manage your shift requests below.</p>
+            <p>Review and manage your Time Off requests below.</p>
         </div>
-        <!-- Content for shift requests would go here -->
        
         <div>
             <div class="employee-requests">
@@ -102,35 +119,27 @@
 
         
 <script>
-// ------------------------
-// LOAD ACTIVE USER
-// ------------------------
+
 const activeUser = JSON.parse(localStorage.getItem("activeUser"));
 if (!activeUser) {
     window.location.href = "Login.html";
 }
 const userID = activeUser.userID;
 
-// ------------------------
-// LOAD SAVED REQUESTS ON PAGE LOAD
-// ------------------------
+
 document.addEventListener("DOMContentLoaded", function () {
     loadRequestsFromStorage();
     updateCounters();
 });
 
-// ------------------------
-// TOGGLE FORM VISIBILITY
-// ------------------------
+
 document.getElementById("request-button").addEventListener("click", function () {
     const formSection = document.querySelector(".make-request");
     formSection.style.display = 
         formSection.style.display === "block" ? "none" : "block";
 });
 
-// ------------------------
-// SUBMIT REQUEST
-// ------------------------
+
 document.getElementById("request-form").addEventListener("submit", function(event) {
     event.preventDefault();
 
@@ -156,9 +165,7 @@ document.getElementById("request-form").addEventListener("submit", function(even
     document.querySelector(".make-request").style.display = "none";
 });
 
-// ------------------------
-// SAVE REQUEST (PER USER)
-// ------------------------
+
 function saveRequestToLocalStorage(request) {
     const key = `requests_${userID}`;
     const requests = JSON.parse(localStorage.getItem(key)) || [];
@@ -166,18 +173,14 @@ function saveRequestToLocalStorage(request) {
     localStorage.setItem(key, JSON.stringify(requests));
 }
 
-// ------------------------
-// LOAD REQUESTS (PER USER)
-// ------------------------
+
 function loadRequestsFromStorage() {
     const key = `requests_${userID}`;
     const requests = JSON.parse(localStorage.getItem(key)) || [];
     requests.forEach(req => addRowToTable(req));
 }
 
-// ------------------------
-// ADD ROW TO TABLE
-// ------------------------
+
 function addRowToTable(request) {
     const tableBody = document.querySelector("#request-table tbody");
 
@@ -200,9 +203,7 @@ function addRowToTable(request) {
     });
 }
 
-// ------------------------
-// DELETE REQUEST (PER USER)
-// ------------------------
+
 function deleteRequest(id) {
     const key = `requests_${userID}`;
     let requests = JSON.parse(localStorage.getItem(key)) || [];
@@ -215,9 +216,7 @@ function deleteRequest(id) {
     updateCounters();
 }
 
-// ------------------------
-// UPDATE SUMMARY COUNTERS
-// ------------------------
+
 function updateCounters() {
     const key = `requests_${userID}`;
     const requests = JSON.parse(localStorage.getItem(key)) || [];

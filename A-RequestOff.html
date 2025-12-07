@@ -15,11 +15,11 @@
                 <h3>Shift Requests</h3>
             
                 <ul>
-                    <li><a href="employee-dash.html">Dashboard</a></li>
-                    <li><a href="ProfilePage.html">Profile</a></li>
-                    <li><a href="E-ShiftRequests.html">Shift Requests</a></li>
-                    <li><a href="E-RequestOff.html">Request Offs</a></li>
-                    <li><a href="E-Payroll.html">Payroll</a></li>
+                    <li><a href="Admin-dash.html">Dashboard</a></li>
+                    <li><a href="Admin-Profile.html">Profile</a></li>
+                    <li><a href="A-ShiftRequests.html">Shift Requests</a></li>
+                    <li><a href="A-RequestOff.html">Request Offs</a></li>
+                    <li><a href="A-Payroll.html">Payroll</a></li>
                     <li><a href="Login.html">Logout</a></li>
                 </ul>
                 
@@ -28,12 +28,29 @@
     </section>
 
     <section class="dashboard-content">
-
+        <div class="mobile-nav">
+          
+            <div class="dropdown">
+                <button class="dropbtn" aria-label="Toggle menu">
+                &#9776; <!-- Hamburger icon -->
+                </button>
+                
+                <div class="dropdown-content">
+                     <a href="Admin-dash.html">Dashboard</a>
+                     <a href="Admin-Profile.html">Profile</a>
+                     <a href="A-ShiftRequests.html">Shift Requests</a>
+                     <a href="A-RequestOff.html">Request Offs</a>
+                     <a href="A-Payroll.html">Payroll</a>
+                     <a href="Login.html">Logout</a>
+                </div>
+            </div>
+            <h1>ALA | Dashboard</h1>  
+        </div>
         <div class="dashboard-message">
             <h1>Employee Time Off Requests</h1>
             <p>Review and manage shift requests below.</p>
         </div>
-        <!-- Content for shift requests would go here -->
+
         <div class="employee-requests">
             <div class="request-summary">
                 <h2>Employee Time Off Requests</h2>
@@ -82,9 +99,7 @@
     </div>
 
    <script>
-// ------------------------
-// LOAD ALL EMPLOYEE REQUESTS
-// ------------------------
+
 document.addEventListener("DOMContentLoaded", function () {
     loadAllRequests();
 });
@@ -92,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function loadAllRequests() {
     const table = document.querySelector(".all-requests table");
     
-    // Remove old rows
+   
     table.querySelectorAll("tr:not(:first-child)").forEach(row => row.remove());
 
     const allKeys = Object.keys(localStorage);
@@ -133,7 +148,7 @@ function addRequestRow(request, userID) {
 
     table.appendChild(row);
 
-    // Approve / Decline handlers
+    // Approve / Decline 
     row.querySelector(".approve-btn").addEventListener("click", () => updateStatus(row, "Approved"));
     row.querySelector(".decline-btn").addEventListener("click", () => updateStatus(row, "Denied"));
 }
@@ -147,14 +162,11 @@ function updateStatus(row, newStatus) {
 
     let requests = JSON.parse(localStorage.getItem(key)) || [];
 
-    // Find and update the request
     const request = requests.find(r => r.id === requestID);
     if (request) request.status = newStatus;
 
-    // Save back
     localStorage.setItem(key, JSON.stringify(requests));
 
-    // UI update
     row.querySelector(".status-cell").textContent = newStatus;
     row.style.backgroundColor = newStatus === "Approved" ? "#c8ffd4" : "#ffd6d6";
 

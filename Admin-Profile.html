@@ -10,7 +10,7 @@
 <body class="ProfilePage">
   <header class="prof-header">
     <div class="back">
-      <a href="employee-dash.html"><i class="arrow left"></i></a> 
+      <a href="Admin-dash.html"><i class="arrow left"></i></a> 
     </div>
     <div>
     <h1>Profile</h1>
@@ -32,7 +32,7 @@
       <div class="left-bottom">
         <h3>Employee Information:</h3>
         <p><strong>EmployeeID:</strong> <span id="profile-employee-id"></span></p>
-        <p><strong>Status: </strong>Standard</p>
+        <p><strong>Status: </strong>Administrator</p>
         <p><strong>Department:</strong> Information Science</p>
         <p><strong>Email:</strong> <span id="profile-email"></span></p>
 
@@ -45,12 +45,10 @@
     const activeUser = JSON.parse(localStorage.getItem("activeUser"));
 
     if (!activeUser) {
-        // If user not logged in → send back to login page
         window.location.href = "Login.html";
         return;
     }
 
-    // Fill EmployeeID and Email
     document.getElementById("profile-employee-id").textContent = activeUser.userID;
     document.getElementById("profile-email").textContent = activeUser.email;
 });
@@ -143,7 +141,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 editBtn.onclick = () => {
-     
     nameInput.value = nameText.textContent;
     relInput.value = relText.textContent;
     emailInput.value = emailText.textContent;
@@ -159,13 +156,11 @@ editBtn.onclick = () => {
 
 
 saveBtn.onclick = () => {
-    
     nameText.textContent = nameInput.value;
     relText.textContent = relInput.value;
     emailText.textContent = emailInput.value;
     phoneText.textContent = phoneInput.value;
 
-   
     const dataToSave = {
         name: nameInput.value,
         relationship: relInput.value,
@@ -175,7 +170,6 @@ saveBtn.onclick = () => {
 
     localStorage.setItem("emergencyContact", JSON.stringify(dataToSave));
 
-    
     view.classList.remove("hidden");
     edit.classList.add("hidden");
 

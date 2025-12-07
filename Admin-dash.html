@@ -1,33 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
 <head>
-  <title>ALA/Employee Dashboard</title>
+  <title>ALA/Admin-Dashboard</title>
   <link rel="stylesheet" type="text/css" href="CRUD-Styles.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body class="Employee-Dash">
+<body class="Admin-Dash">
     <div class="dash">
-        
     <section class="menu">
         <nav class="nav-menu">
             <h1>ALA</h1>
             <div class="list">
                 <h3>Dashboard</h3>
-           
                 <ul>
-                    <li><a href="employee-dash.html">Dashboard</a></li>
-                    <li><a href="ProfilePage.html">Profile</a></li>
-                    <li><a href="E-ShiftRequests.html">Shift Requests</a></li>
-                    <li><a href="E-RequestOff.html">Request Offs</a></li>
-                    <li><a href="E-Payroll.html">Payroll</a></li>
+                    <li><a href="Admin-dash.html">Dashboard</a></li>
+                    <li><a href="Admin-Profile.html">Profile</a></li>
+                    <li><a href="A-ShiftRequests.html">Shift Requests</a></li>
+                    <li><a href="A-RequestOff.html">Request Offs</a></li>
+                    <li><a href="A-Payroll.html">Payroll</a></li>
                     <li><a href="Login.html">Logout</a></li>
                 </ul>
-               
+                
             </div>
         </nav>
-    </section> 
+    </section>
     <section class="dashboard-content">
         <div class="mobile-nav">
           
@@ -37,11 +34,11 @@
                 </button>
                 
                 <div class="dropdown-content">
-                     <a href="employee-dash.html">Dashboard</a>
-                     <a href="ProfilePage.html">Profile</a>
-                     <a href="E-ShiftRequests.html">Shift Requests</a>
-                     <a href="E-RequestOff.html">Request Offs</a>
-                     <a href="E-Payroll.html">Payroll</a>
+                     <a href="Admin-dash.html">Dashboard</a>
+                     <a href="Admin-Profile.html">Profile</a>
+                     <a href="A-ShiftRequests.html">Shift Requests</a>
+                     <a href="A-RequestOff.html">Request Offs</a>
+                     <a href="A-Payroll.html">Payroll</a>
                      <a href="Login.html">Logout</a>
                 </div>
             </div>
@@ -55,25 +52,23 @@
             <div class="dash-top">
                 <div class="dash-top-left">
                     <div class="dashcard">
-                        <a href="E-RequestOff.html">
+                        <a href="A-RequestOff.html">
                             <h2>Time Off  Requests</h2>
                             <p id="pending-request-count">You have 0 pending requests to review.</p>
                         </a>
                     </div>
                     <div class="dashcard">
-                        <a href="E-ShiftRequests.html">
+                        <a href="A-ShiftRequests.html">
                         <h2>Shift Requests</h2>
                         <p>You have 0 pending shift requests.</p>
                         </a>
                     </div>
                 </div>  
 
-
                     <div class="dashcard">
-                        <a href="E-Payroll.html">
+                        <a href="A-Payroll.html">
                             <h2>Upcoming Payroll</h2>
                             <div id="payweek">
-
 
                                     <div>
                                         <p>Start Date:</p>
@@ -84,126 +79,87 @@
                                         <p id="end"></p>
                                     </div>
 
-
                             </div>
                         </a>
                     </div>
             </div>    
 
-
                 <div class="dashcard">
-                    <a href="ProfilePage.html">
+                    <a href="Admin-Profile.html">
                         <h2>To Do List</h2>
                         <p>You do not have any active tasks. Check out your Profile for more information.</p>
                     </a>
                 </div>
         </section>
 
-
     </section>
-
 
 <script>
 
-
-    document.addEventListener("DOMContentLoaded", function () {
-    const activeUser = JSON.parse(localStorage.getItem("activeUser"));
+document.addEventListener("DOMContentLoaded", function () {
 
 
-    if (!activeUser) {
-   
-        window.location.href = "Login.html";
-        return;
-    }
-
-
-   
-    document.getElementById("profile-employee-id").textContent = activeUser.userID;
-   
-    });
-
-
-
-
-    document.addEventListener("DOMContentLoaded", function () {
     const activeUser = JSON.parse(localStorage.getItem("activeUser"));
     if (!activeUser) {
         window.location.href = "Login.html";
         return;
     }
-
 
     const userID = activeUser.userID;
+    document.getElementById("profile-employee-id").textContent = userID;
 
 
- 
-    const profileEl = document.getElementById("profile-employee-id");
-    if (profileEl) profileEl.textContent = userID;
-
-
-    /*REQUEST OFF */
-
-
+   
+/*Time off requests*/
     const timeOffRequests = JSON.parse(localStorage.getItem(`requests_${userID}`)) || [];
     const pendingTimeOff = timeOffRequests.filter(r => r.status === "Pending").length;
 
-
     const pendingTimeOffEl = document.getElementById("pending-request-count");
     if (pendingTimeOffEl) {
-        pendingTimeOffEl.textContent = `You have ${pendingTimeOff} pending request${pendingTimeOff !== 1 ? 's' : ''} to review.`;
+        pendingTimeOffEl.textContent =
+            `You have ${pendingTimeOff} pending time-off request${pendingTimeOff !== 1 ? "s" : ""} to review.`;
     }
 
 
-
-
-    /*SHIFT REQUESTS */
-    const shiftKey = `shift_requests_${userID}`;
-    const shiftRequests = JSON.parse(localStorage.getItem(shiftKey)) || [];
+  /*Shift Requests*/
+    const shiftRequests = JSON.parse(localStorage.getItem(`shift_requests_${userID}`)) || [];
     const pendingShifts = shiftRequests.filter(r => r.status === "Pending").length;
 
+    const shiftCardPara = document.querySelector('a[href="A-ShiftRequests.html"] p');
 
-    const shiftCardPara = document.querySelector('.dash-card a[href="E-ShiftRequests.html"] p');
     if (shiftCardPara) {
-        shiftCardPara.textContent = `You have ${pendingShifts} pending shift request${pendingShifts !== 1 ? 's' : ''}.`;
+        shiftCardPara.textContent =
+            `You have ${pendingShifts} pending shift request${pendingShifts !== 1 ? "s" : ""}.`;
     }
-    });
-
-
-
-
-    function fillPayPeriodDates() {
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = today.getMonth();
-
-
-       
-        let startDate, endDate;
-        if (today.getDate() <= 15) {
-            startDate = new Date(year, month, 1);
-            endDate = new Date(year, month, 15);
-        } else {
-            startDate = new Date(year, month, 16);
-            endDate = new Date(year, month + 1, 0);
-        }
-
-
-        const options = { year: "numeric", month: "long", day: "numeric" };
-        document.getElementById("start").textContent =
-            startDate.toLocaleDateString(undefined, options);
-        document.getElementById("end").textContent =
-            endDate.toLocaleDateString(undefined, options);
-    }
-
-
-
 
     fillPayPeriodDates();
 
+});
+
+
+
+/*Pay day*/
+function fillPayPeriodDates() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+
+    let startDate, endDate;
+
+    if (today.getDate() <= 15) {
+        startDate = new Date(year, month, 1);
+        endDate = new Date(year, month, 15);
+    } else {
+        startDate = new Date(year, month, 16);
+        endDate = new Date(year, month + 1, 0);
+    }
+
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    document.getElementById("start").textContent = startDate.toLocaleDateString(undefined, options);
+    document.getElementById("end").textContent = endDate.toLocaleDateString(undefined, options);
+}
 
 </script>
-
-
 
 
 
@@ -211,10 +167,3 @@
     </div>
 </body>
 </html>
-
-
-
-
-
-
-
