@@ -142,6 +142,27 @@
           </table>
         </div>
       </div>
+
+      <div id="all-employee-shifts" class="employee-requests">
+        <h1>All Employee Shifts</h1>
+
+        <table id="admin-grouped-shift-table">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Shift Type</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+
+
+
+
+
     </section>
   </div>
 
@@ -309,6 +330,73 @@ function updateOpenShiftCounts() {
     document.getElementById("Open-count").textContent = open;
     document.getElementById("Taken-count").textContent = taken;
 }
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadGroupedShiftsByUser();
+});
+
+function loadGroupedShiftsByUser() {
+    const tbody = document.querySelector("#admin-grouped-shift-table tbody");
+    tbody.innerHTML = "";
+
+ /*load requests*/
+    const allRequests = JSON.parse(localStorage.getItem("all_shift_requests")) || [];
+    const approved = allRequests
+        .filter(r => r.status === "Approved")
+        .map(r => ({
+            userID: r.userID,
+            type: r.type,
+            date: r.date
+        }));
+
+  /*Load all taken shifts*/
+    const openShifts = JSON.parse(localStorage.getItem("open_shifts")) || [];
+    const taken = openShifts
+        .filter(s => s.status === "Taken")
+        .map(s => ({
+            userID: s.employeeID,
+            type: s.type,
+            date: s.date
+        }));
+
+   /*combine by userID*/
+    const combined = [...approved, ...taken];
+
+    const grouped = combined.reduce((acc, shift) => {
+        if (!acc[shift.userID]) acc[shift.userID] = [];
+        acc[shift.userID].push({ type: shift.type, date: shift.date });
+        return acc;
+    }, {});
+
+   
+    Object.keys(grouped).forEach(userID => {
+        const shifts = grouped[userID];
+
+        
+        const firstRow = document.createElement("tr");
+        firstRow.innerHTML = `
+            <td rowspan="${shifts.length}">${userID}</td>
+            <td>${shifts[0].type}</td>
+            <td>${shifts[0].date}</td>
+        `;
+        tbody.appendChild(firstRow);
+
+        
+        for (let i = 1; i < shifts.length; i++) {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${shifts[i].type}</td>
+                <td>${shifts[i].date}</td>
+            `;
+            tbody.appendChild(row);
+        }
+    });
+}
+
 </script>
 
 </body>
