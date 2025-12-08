@@ -26,21 +26,392 @@
             </div>
         </nav>
     </section>
+
     <section class="dashboard-content">
+        <div class="mobile-nav">
+          
+            <div class="dropdown">
+                <button class="dropbtn" aria-label="Toggle menu">
+                &#9776; <!-- Hamburger icon -->
+                </button>
+                
+                <div class="dropdown-content">
+                     <a href="employee-dash.html">Dashboard</a>
+                     <a href="ProfilePage.html">Profile</a>
+                     <a href="E-ShiftRequests.html">Shift Requests</a>
+                     <a href="E-RequestOff.html">Request Offs</a>
+                     <a href="E-Payroll.html">Payroll</a>
+                     <a href="Login.html">Logout</a>
+                </div>
+            </div>
+            <h1>ALA | Shift Requests</h1>  
+        </div>
         <div class="dashboard-message">
             <h1>Your Shift Requests</h1>
-            <p>Manage and review your shift requests below.</p>
+            <p>Review and Manage Your Shift Requests Below.</p>
         </div>
-        <!-- Content for managing shift requests would go here -->
-        <div>
-            <div class="dash-card">
-            <h2>No Shift Requests Found</h2>
-            <p>You currently have no shift requests. Use the button below to create a new request.</p>
-            <button type="button">Create New Shift Request</button>
-            </div>
-
+        <!-- Content for shift requests would go here -->
+       <div class="employee-requests">
+            <h2>Your Upcoming Schedule</h2>
+            <table id="combined-shift-table">
+                <thead>
+                    <tr>
+                        <th>Shift Type</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
 
+
+
+
+
+
+       <!--EMPLOYEE CREATES REQUEST-->
+        <div class="employee-requests">
+          <div class="request-summary">
+              <h2>Your Shift Requests</h2>
+                  <div>
+                    <table>
+                        <tr>
+                            <th>Approved Requests</th>
+                            <th>Denied Requests</th>
+                            <th>Pending Requests</th>
+                        </tr>
+                        <tr>
+                            <td id="approved-count">0</td>
+                            <td id="denied-count">0</td>
+                            <td id="pending-count">0</td> 
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="all-requests">
+                    <div class="all-requests-header">
+                        <h3>All Shift Requests</h3>
+                        <button id="request-button">Make Request</button>
+                    </div>
+                    
+                    <div class="make-request">
+                        <form id="request-form">
+                            <label for="shift-type">Shift Type:</label>
+                            <select id="shift-type" name="shift-type" required>
+                                <option value="Morning">Morning Shift</option>
+                                <option value="Afternoon">Afternoon Shift</option>
+                                <option value="Evening">Evening Shift</option>
+                                <option value="Weekend">Weekend Shift</option>
+                            </select>
+
+                            <div>
+                                <label for="start-date">Date:</label>
+                                <input type="date" id="date" name="date" required>
+                            </div>
+
+                            <button type="submit">Submit Shift Request</button>
+
+                        </form>
+                    </div>
+                    
+                    
+                    <table id="request-table">
+                        <thead>
+                            <tr>
+                                <th>Shift Type</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th> </th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+          </div>
+            
+        </div>
+        <!--EMPLOYEE-->
+        <div class="employee-requests">
+          <div class="request-summary">
+              <h2>Open Shifts</h2>
+                  <div>
+                    <table>
+                        <tr>
+                            <th>Open Shifts</th>
+                            <th>Taken Shifts</th>
+                        </tr>
+                        <tr>
+                            <td id="Open-count">0</td>
+                            <td id="Taken-count">0</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="all-requests">
+                    <div class="all-requests-header">
+                        <h3>All Shifts</h3>
+                        
+                    </div>
+                    <table id="open-shift-table">
+                        <thead>
+                            <tr>
+                                <th>Shift Type</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+          </div>
+            
+        </div>
+
+
+
+
+        
+<script>
+
+
+const activeUser = JSON.parse(localStorage.getItem("activeUser"));
+if (!activeUser || !activeUser.userID) {
+    window.location.href = "Login.html";
+}
+const userID = activeUser.userID;
+
+
+// show or hide shift request form
+document.getElementById("request-button").addEventListener("click", () => {
+    const formDiv = document.querySelector(".make-request");
+    formDiv.style.display = formDiv.style.display === "none" ? "block" : "none";
+});
+document.querySelector(".make-request").style.display = "none";
+
+//submit shift requests
+document.getElementById("request-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const type = document.getElementById("shift-type").value;
+    const date = document.getElementById("date").value;
+
+    const today = new Date().toISOString().split("T")[0];
+    if (date < today) {
+        alert("You cannot select a past date.");
+        return;
+    }
+
+    const newRequest = {
+        id: Date.now(),
+        userID,
+        type,
+        date,
+        status: "Pending"
+    };
+
+    saveUserShiftRequest(newRequest);
+    saveGlobalShiftRequest(newRequest);
+
+    loadUserRequests();
+    loadCombinedShifts();
+
+    this.reset();
+    document.querySelector(".make-request").style.display = "none";
+});
+
+
+//load from local storage
+function saveUserShiftRequest(request) {
+    const key = `shift_requests_${userID}`;
+    const list = JSON.parse(localStorage.getItem(key)) || [];
+    list.push(request);
+    localStorage.setItem(key, JSON.stringify(list));
+}
+
+function saveGlobalShiftRequest(request) {
+    const list = JSON.parse(localStorage.getItem("all_shift_requests")) || [];
+    list.push(request);
+    localStorage.setItem("all_shift_requests", JSON.stringify(list));
+}
+
+
+//load user requests
+function loadUserRequests() {
+    const key = `shift_requests_${userID}`;
+    const requests = JSON.parse(localStorage.getItem(key)) || [];
+
+    const tbody = document.querySelector("#request-table tbody");
+    tbody.innerHTML = "";
+
+    requests.forEach(req => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${req.type}</td>
+            <td>${req.date}</td>
+            <td>${req.status}</td>
+            <td>
+                <button class="delete-btn" data-id="${req.id}">Delete</button>
+            </td>
+        `;
+        tbody.appendChild(row);
+
+        row.querySelector(".delete-btn").addEventListener("click", () => {
+            deleteUserRequest(req.id);
+        });
+    });
+
+    updateUserCounts();
+}
+
+
+//delete a request
+function deleteUserRequest(id) {
+    const key = `shift_requests_${userID}`;
+    let requests = JSON.parse(localStorage.getItem(key)) || [];
+    requests = requests.filter(r => r.id !== id);
+    localStorage.setItem(key, JSON.stringify(requests));
+
+    let globalRequests = JSON.parse(localStorage.getItem("all_shift_requests")) || [];
+    globalRequests = globalRequests.filter(r => r.id !== id);
+    localStorage.setItem("all_shift_requests", JSON.stringify(globalRequests));
+
+    loadUserRequests();
+    loadCombinedShifts();
+}
+
+
+//approved+pending+denied counter
+function updateUserCounts() {
+    const key = `shift_requests_${userID}`;
+    const requests = JSON.parse(localStorage.getItem(key)) || [];
+
+    const approved = requests.filter(r => r.status === "Approved").length;
+    const denied = requests.filter(r => r.status === "Denied").length;
+    const pending = requests.filter(r => r.status === "Pending").length;
+
+    document.getElementById("approved-count").textContent = approved;
+    document.getElementById("denied-count").textContent = denied;
+    document.getElementById("pending-count").textContent = pending;
+}
+
+
+//admin created shifts
+function loadOpenShifts() {
+    const openShifts = JSON.parse(localStorage.getItem("open_shifts")) || [];
+    const tbody = document.querySelector("#open-shift-table tbody");
+    tbody.innerHTML = "";
+
+    openShifts.forEach(shift => {
+        const actionBtn = shift.status === "Open"
+            ? `<button class="take-shift" data-id="${shift.id}">Take Shift</button>`
+            : "";
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${shift.type}</td>
+            <td>${shift.date}</td>
+            <td>${shift.status}</td>
+            <td>${actionBtn}</td>
+        `;
+        tbody.appendChild(row);
+    });
+
+    attachTakeShiftEvents();
+}
+
+
+//take a shift
+function attachTakeShiftEvents() {
+    document.querySelectorAll(".take-shift").forEach(btn => {
+        btn.addEventListener("click", function () {
+            const id = Number(this.dataset.id);
+
+            let openShifts = JSON.parse(localStorage.getItem("open_shifts")) || [];
+
+            openShifts = openShifts.map(shift => {
+                if (shift.id === id) {
+                    shift.status = "Taken";
+                    shift.employeeID = activeUser.userID;
+                }
+                return shift;
+            });
+
+            localStorage.setItem("open_shifts", JSON.stringify(openShifts));
+
+            loadOpenShifts();
+            updateOpenShiftCounts();
+            loadCombinedShifts(); // NEW
+        });
+    });
+}
+
+
+//open shift counter
+function updateOpenShiftCounts() {
+    const openShifts = JSON.parse(localStorage.getItem("open_shifts")) || [];
+
+    const open = openShifts.filter(s => s.status === "Open").length;
+    const taken = openShifts.filter(s => s.status === "Taken").length;
+
+    document.getElementById("Open-count").textContent = open;
+    document.getElementById("Taken-count").textContent = taken;
+}
+
+
+//upcoming schedule [combination of take and requested shifts]
+function loadCombinedShifts() {
+    const tbody = document.querySelector("#combined-shift-table tbody");
+    tbody.innerHTML = "";
+
+    const userRequests = JSON.parse(localStorage.getItem(`shift_requests_${userID}`)) || [];
+    const openShifts = JSON.parse(localStorage.getItem("open_shifts")) || [];
+
+    // Approved user-submitted requests
+    const approved = userRequests
+        .filter(r => r.status === "Approved")
+        .map(r => ({
+            type: r.type,
+            date: r.date,
+            category: "Approved Request"
+        }));
+
+    // Shifts user has taken
+    const taken = openShifts
+        .filter(s => s.status === "Taken" && s.employeeID === userID)
+        .map(s => ({
+            type: s.type,
+            date: s.date,
+            category: "Taken Shift"
+        }));
+
+    const combined = [...approved, ...taken];
+
+    // Sort by date
+    combined.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    combined.forEach(item => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${item.type}</td>
+            <td>${item.date}</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+
+//load the page
+document.addEventListener("DOMContentLoaded", () => {
+    loadUserRequests();
+    loadOpenShifts();
+    updateOpenShiftCounts();
+    loadCombinedShifts(); // NEW
+});
+
+
+
+</script>
 
 
 
@@ -49,5 +420,8 @@
 
 
     </section>
+
     </div>
+</body>
+
 </html>
