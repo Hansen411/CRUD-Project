@@ -154,7 +154,7 @@ if (!activeAdmin) window.location.href = "Login.html";
 let allRequests = JSON.parse(localStorage.getItem("all_shift_requests")) || [];
 let openShifts = JSON.parse(localStorage.getItem("open_shifts")) || [];
 
-
+/*loading the page*/
 document.addEventListener("DOMContentLoaded", () => {
     loadShiftRequests();
     loadOpenShifts();
@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupCreateShiftButton();
 });
 
-/*show/hide request*/
+/*show/hide form to create open shifts. triggers by clicking the Create Shift button*/
 function setupCreateShiftButton() {
     const btn = document.getElementById("request-button");
     const form = document.querySelector(".make-request");
@@ -173,7 +173,8 @@ function setupCreateShiftButton() {
     });
 }
 
-/*requests*/
+/*loads in shift requests created by employees indluding: employeeID, type[vacation/sick/personal/other],
+date of request, status [approved/declined/pending], actions [accept/decline]*/
 function loadShiftRequests() {
     const tbody = document.querySelector("#request-table tbody");
     tbody.innerHTML = "";
@@ -203,7 +204,7 @@ function loadShiftRequests() {
     attachRequestActionEvents();
     updateRequestCounts();
 }
-
+/*the approve and deny buttons related to the employee requests*/
 function attachRequestActionEvents() {
     document.querySelectorAll(".approve-btn").forEach(btn => {
         btn.addEventListener("click", () => updateRequestStatus(Number(btn.dataset.id), "Approved"));
@@ -212,7 +213,8 @@ function attachRequestActionEvents() {
         btn.addEventListener("click", () => updateRequestStatus(Number(btn.dataset.id), "Denied"));
     });
 }
-
+/*displays shift request created by employee, includes: employee ID, shift type [morning, afternoon, night], 
+status [approved/pending/denied]*/
 function updateRequestStatus(id, status) {
     allRequests = allRequests.map(req => {
         if (req.id === id) req.status = status;
@@ -230,7 +232,7 @@ function updateRequestStatus(id, status) {
 
     loadShiftRequests();
 }
-
+/*updates the employee shift approved/denied/pending counter at the top of Employee Shift Requests card*/
 function updateRequestCounts() {
     const approved = allRequests.filter(r => r.status === "Approved").length;
     const denied = allRequests.filter(r => r.status === "Denied").length;
@@ -241,7 +243,7 @@ function updateRequestCounts() {
     document.getElementById("pending-count").textContent = pending;
 }
 
-/*creating open shifts*/
+/*for creating shifts, bottom half is for hiding the create shift form unless the "create shift" button has been clicked*/
 document.getElementById("rform").addEventListener("submit", function(e) {
     e.preventDefault();
     const type = document.getElementById("shift-type").value;
@@ -264,7 +266,8 @@ document.getElementById("rform").addEventListener("submit", function(e) {
     this.reset();
 });
 
-
+/*load created shift into Create Shifts table, it will include information such as shift type, date , status (open/taken
+and actions (delete button). */
 function loadOpenShifts() {
     openShifts = JSON.parse(localStorage.getItem("open_shifts")) || [];
     const tbody = document.querySelector("#open-shift-table tbody");
@@ -286,7 +289,7 @@ function loadOpenShifts() {
 
     attachOpenShiftDelete();
 }
-
+/*lets the admin delete the shift after it has been posted*/
 function attachOpenShiftDelete() {
     document.querySelectorAll(".delete-btn").forEach(btn => {
         btn.addEventListener("click", function() {
@@ -298,7 +301,7 @@ function attachOpenShiftDelete() {
         });
     });
 }
-
+/*updates the taken and open shift counters at the top of the card based on open/take shifts*/
 function updateOpenShiftCounts() {
     const open = openShifts.filter(s => s.status === "Open").length;
     const taken = openShifts.filter(s => s.status === "Taken").length;
