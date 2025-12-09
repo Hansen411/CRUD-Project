@@ -523,6 +523,11 @@ display: flex;
     margin:0;
 }
 
+
+.dashcard:hover {
+  border-left: #d485bd solid 5px;
+}
+
 #all-employee-shifts h1{
     padding-left:20px;
     padding-top:20px;
