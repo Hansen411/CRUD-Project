@@ -1,0 +1,948 @@
+.Login  {
+    background-color: #d485bd ;
+    color: #444054;
+    text-align: center;
+}
+
+.login-top h1 {
+    color:#d485bd;
+    font-style: italic;
+    margin-bottom: 0;
+    font-size: 3.5em;
+}
+
+.login-top h2 {
+    margin-top: 0;
+}
+
+.login-base {
+    background-color: white;
+    margin: 3em;
+    margin-top:4em;
+    padding-top: 3em;
+    padding-bottom: 6em;
+    box-shadow: 0 0 5px 3px #8c6883;
+    border-radius: 5px;
+    height:400px;
+}
+
+.user-info form{
+    display: grid;
+    justify-content: center;
+    gap:20px;
+    padding-bottom: 25px;
+    padding-top: 10px;
+}
+.user-info input {
+    width: 100%;
+    height:35px;
+    border:none;
+    border-bottom: #d485bd solid 2px;
+}
+
+.user-info button {
+    background-color: #2F243A;
+    color: white;
+    width: 100px;
+    height: 35px;
+    border-radius: 5px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.sign-up {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: small;
+}
+.sign-up a {
+    text-decoration: none;
+    padding-right:3px;
+    padding-left: 3px;
+    color: #d485bd;
+    font-weight: bold;
+}
+
+ a:hover{
+    cursor: pointer;
+}
+ button:hover {
+    cursor: pointer;
+}
+
+.Sign-Up {
+    background-color: #d485bd ;
+    color: #444054;
+    text-align: center;
+}
+
+.back {
+    text-align: left;
+    padding-left:20px;
+    padding-bottom: 3.8em;;
+}
+
+.Sign-base {
+    background-color: white;
+    margin: 3em;
+    margin-top:4em;
+    padding-top: 1em;
+    padding-bottom: 8em;
+    box-shadow: 0 0 5px 3px #8c6883;
+    border-radius: 5px;
+    height:400px;
+}
+
+.arrow {
+  border: solid #2F243A;
+  border-width: 0 5px 5px 0;
+  display: inline-block;
+  padding: 3px;
+}
+.left {
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
+
+footer {
+    font-style: italic;
+}
+
+/* Profile Page Styles */
+.ProfilePage{
+    text-align: center;
+    margin:0;
+}
+.prof-header {
+    background-color: #d485bd;
+    color: white;
+    padding: 1em;
+    display: flex;
+    flex-wrap: nowrap;
+    gap:20px;
+    align-items: center;
+    justify-content: center;
+}
+.prof-header h1 {
+    margin:0;
+    font-size: 2em;
+    flex-grow:1;
+    text-align: center;
+    
+}
+.prof-header .back {
+    position: absolute;
+    left: 25px;
+    top: 25px;
+    padding:0;
+    margin:0;
+}
+
+
+.card-edit {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: #d485bd solid 2px;
+    padding-bottom: 2px;
+    gap:10px;
+}
+
+.card-edit button {
+    background-color: white;
+    color: #2F243A;
+    width: auto;
+    height: auto;
+    border:none;
+    font-size: small;
+    align-items: end;
+}
+
+.right-card .card-edit button:hover {
+    cursor: pointer;
+    text-decoration: underline;}
+.card-edit h3 {
+      
+    font-size: 1.2em;
+}
+
+
+.profile-left {
+    text-align: left;
+    margin-left:35px;
+    margin-right:35px;
+    padding:1%;
+    margin-top:30px;
+    box-shadow: 0 0 5px 3px #8c6883;
+    border-radius: 15px;
+}
+.profile-left hr {
+    border: dashed;
+    color: #2F243A;
+    margin-top: 10px;
+}
+
+.left-top {
+    background-color: #d485bd;
+    margin:0;
+    text-align: center;
+    padding: 15px;
+    border-radius: 15px 15px 0 0;
+    
+}
+.left-top img {
+    width: 40%;
+    height: auto;
+    border-radius:50%;
+}
+.left-bottom {
+    background-color: white;
+    padding-left:1em;
+    padding-top:1em;
+    margin-bottom: 3em;
+}
+.left-bottom p {
+    text-align: left;
+    font-size: medium;
+    margin:0.5em;
+}
+
+.right-card {
+    border-left:#2F243A solid 5px;
+    border-radius: 10px;
+    padding-left:2.5em;
+    padding-right:2.5em;
+    margin:30px;
+    padding-bottom: 15px;
+    box-shadow: -5px 0 7px  #8c6883;
+   
+}
+
+.right-card p {
+    text-align: left;
+    font-size: medium;
+    margin:0.5em;
+    border-left: #d485bd solid 5px;
+    padding-left:10px;    
+}
+#info-view{
+    text-align: left;
+    font-size: medium;
+}
+#info-edit  {
+    margin-top:.5em;
+}
+
+#info-edit label{
+    text-align: left;
+    font-size: medium;
+    font-weight: bold;
+    margin:0.5em;
+    border-left: #d485bd solid 5px;
+    padding-left:10px;
+    
+}
+
+.profile-right {
+    text-align: left;
+    margin:0;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.prof-info {
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+   padding-bottom: 45px;
+   
+
+}
+
+
+
+.hidden { display: none; }
+
+.mobile-nav{
+    background-color: #2F243A;
+    padding:1em;
+    display: flex;
+    color:white;
+}
+
+
+/* Dropdown Button */
+.dropbtn {
+  background-color: #2F243A;
+  color: white;
+  font-weight: bold;
+  padding: 16px;
+  font-size: 26px;
+  border: none;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #2F243A;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: white;
+  padding: 12px 16px;
+  font-weight: bold;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #4d4054;}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+
+
+
+
+
+
+
+
+
+
+/* Employee-Dash Styles */
+.Employee-Dash {
+    margin:0;
+    padding:0;
+    gap:0;
+    height: 100%;
+    width: auto;
+    
+}
+
+
+
+.dash {
+    height:100%;
+    display: flex;
+    width: 100%;
+    gap:0;
+}
+
+
+.nav-menu h1 {
+    text-align: center;
+    margin:0;
+    font-style: italic;
+    font-size: 3em;
+}
+.nav-menu h3 {
+    text-align: center;
+    margin-top:0;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+ 
+}
+
+
+
+.nav-menu ul {
+    list-style-type: none;
+    padding: 10px;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: white;
+    font-size: medium;
+    display: block;
+    padding: 8px;
+    font-size: larger;
+    
+}
+
+.nav-menu a:hover {
+    background-color: #4d4054;
+    cursor: pointer;
+    border-radius: 10px;
+    width:100%;
+}
+
+.dashboard-content {
+    width: 100vw;
+    margin-bottom: 2em;
+}
+
+.dashboard-message {
+   background-color: #d485bd;
+   width:100%;
+   text-align: center;
+   padding-top:1em;
+   padding-bottom:1em;
+}
+
+.dashcard{
+    background-color: white;
+    border-left: #2F243A solid 5px;
+    box-shadow: 0 0 5px 3px #8c6883;
+    border-radius: 10px;
+    margin:0;
+    padding:20px;
+}
+
+
+
+.dashcard #payweek{
+display: flex;
+  flex-direction: column; /* stack children vertically */
+  gap: 10px; /* spacing between blocks */
+  align-items: center;
+}
+
+.dashcard #payweek > div {
+  background-color: #e6d3e6;
+  padding: 10px;
+  border-radius: 8px;
+  width: 180px;  /* fixed width to make blocks equal size */
+  text-align: center;
+  box-sizing: border-box; /* include padding in width */
+}
+
+.dashcard h2{
+    padding:10px;
+}
+.dash-top {
+    display: flex;
+    flex-direction: column;
+    gap:25px;
+}
+.dash-top-left {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    
+    flex: 1; 
+}
+
+.dashcard-all {
+    display: flex;
+    flex-direction: column;
+    margin:3em;
+
+    gap:25px;
+}
+
+.dashcard-all a{
+    text-decoration: none;
+    color:#2F243A;
+    
+}
+
+/*ADMIN REQUEST-OFF PAGE STYLES*/
+.Admin-Dash {
+    margin:0;
+    padding:0;
+    gap:0;
+    height: 100%;
+    width: auto;
+   
+}
+
+.employee-requests{
+    background-color: #f4c1e0;
+    box-shadow: 0 0 5px 3px #8c6883;
+    margin:2em;
+    border-radius: 10px;
+    
+}
+
+
+
+
+.request-summary{
+    text-align: center;
+    font-size: medium;
+}
+.employee-requests h2{
+    text-align: center;
+    padding:1em;
+    margin:0;
+}
+.employee-requests table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1em;
+    
+}
+.all-requests{
+    text-align: left;
+    background-color: white;
+    padding-left:16px;
+    padding-right:16px;
+    padding-bottom: 15px;
+    border-radius:0 0 10px 10px;
+    
+}
+.all-requests table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-right: 10px;
+}
+.all-requests th, .all-requests td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+
+}
+.all-requests h3{
+    text-align: left;
+    padding:1em;
+    margin:0;
+}
+.all-requests hr{
+    margin-top: 0;
+    margin-left:10px;
+    margin-right: 10px;
+}
+
+.approve-btn {
+    background-color: green;
+    border:none;
+    color: white;
+    width: 80px;
+    height: 30px;
+    border-radius: 5px;;
+    margin-right: 0;
+    
+}
+
+.decline-btn {
+    background-color: #ff4d4d;
+    border:none;
+    color: white;
+    width: 80px;
+    height: 30px;
+    border-radius: 5px;;
+    margin-left: 5px;
+    
+}
+
+    #request-table .approve-btn,
+    #request-table .decline-btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        box-sizing: border-box;
+    }
+
+
+#open-shift-table {
+    margin-bottom: .5em;;
+}
+.all-requests-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: #d485bd solid 2px;
+    padding-bottom: 2px;
+    gap:10px;
+    margin-bottom: 10px;
+}
+.all-requests-header button {
+    background-color: #2F243A;
+    color: white;
+    width: auto;
+    height: auto;
+    border:solid #2F243A;
+    font-size: small;
+    align-items: end;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.make-request button:hover,
+.all-requests-header button:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+
+/* ------------------------------------
+   MOBILE FIRST (default)
+   Hide STATUS + NOTES (headers + cells)
+------------------------------------- */
+#request-table th.col-status,
+#request-table th.col-notes,
+#request-table td.col-status,
+#request-table td.col-notes {
+    display: none;
+}
+
+/* Make sure any nth-child fallback also hides them */
+#request-table td:nth-child(4),
+#request-table td:nth-child(5),
+#request-table th:nth-child(4),
+#request-table th:nth-child(5) {
+    display: none;
+}
+
+/* Mobile table spacing improvements */
+#request-table th,
+#request-table td {
+    padding: 8px;
+    font-size: 14px;
+}
+
+
+.make-request {
+    text-align: center;
+    margin-top: 1em;
+    display:none;
+}
+.make-request form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap:15px;
+    padding-bottom: 25px;
+    padding-top: 10px;
+}
+.make-request label {
+    font-weight: bold;
+    font-size: medium;
+    display: block;
+    padding-top:10px
+}
+#time-off-type, #start-date, #end-date, #shift-type, #date{
+    width: 50%;
+    height:35px;
+    margin-left: auto;
+    margin-right: auto;
+    border:none;
+    border-bottom: #d485bd solid 2px;
+}
+#Notes {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    border: #d485bd solid 2px;
+}
+
+.make-request button {
+    background-color: #2F243A;
+    color: white;
+    width: auto;
+    height: 30px;
+    border-radius: 5px;
+    margin-left: auto;
+    margin-right:auto;
+    font-weight: bold;
+
+}
+
+.delete-btn{
+    background-color: red;
+    border:none;
+    height:30px;
+    width:65px;;
+    border-radius: 5px;
+    font-weight: bold;
+    color:white;
+
+}
+
+/*payroll*/
+
+.paycard {
+    background-color: white;
+    margin:15px;
+    padding-left:15px;
+    padding-right:15px;
+    padding-bottom: 10px;
+    border-radius: 10px;
+    border-left:#2F243A 4px solid;
+    box-shadow: 0 0 5px 3px #8c6883;
+}
+.paycard p {
+    margin-left: 8px;
+}
+
+.pay-top {
+    display: flex;
+    flex-direction: column;
+   
+}
+.pay-bottom{
+    display: flex;
+    flex-direction: column;
+    height:auto;
+}
+#payweek{
+    display: flex;
+    flex-direction: row;
+    gap:6%;
+    justify-content: center;
+    margin-right:3%;
+    margin-bottom:4%;
+}
+
+#S{
+    background-color: #ecd6e6;
+    padding-left:4%;
+    padding-right:4%;
+    border-radius: 10px;
+    width:50%
+}
+
+
+#upcoming-timeoff{
+    border-left: #ecd6e6 solid 5px;
+    padding-left:4%;
+    padding-right:4%;
+    width:auto;
+    margin-right:8px;
+    margin-bottom:4px;
+}
+
+.calendar-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.calendar-table th {
+    padding: 5px;
+    font-weight: bold;
+}
+
+.calendar-table td {
+    padding: 6px;
+    border: 1px solid #ccc;
+}
+
+.calendar-table td.pto {
+    background-color: #ecd6e6;
+    font-weight: bold;
+   
+}
+
+#ph{
+    margin:0;
+    font-size: small;
+    padding-left:8px;
+}
+.paycard table {
+    margin: 0 auto;        /* Centers the table */
+    text-align: left;      /* Left-aligns text inside cells */
+    font-size: 15px;
+    
+}
+
+table th, table td {
+    padding-right:6px;   /* Optional: spacing for readability */
+    padding-left:6px;
+}
+
+/* MOBILE-FIRST STYLING */
+
+
+
+
+.menu{
+    display:none;
+}
+
+
+/* Media Queries for Responsive Design */
+
+@media (min-width: 600px)
+{
+    .login-base {
+    background-color: white;
+    margin: 3em;
+    margin-left: 25%;
+    margin-right:25%;
+    margin-top:3em;
+    padding-top: 6em;
+    padding-bottom: 6em;
+    box-shadow: 0 0 5px 3px #8c6883;
+    border-radius: 5px;
+    height:600px;
+    }
+    .Sign-base {
+    background-color: white;
+    margin: 3em;
+    margin-left: 25%;
+    margin-right:25%;
+    margin-top:3em;
+    padding-top: 1em;
+    padding-bottom: 11em;
+    box-shadow: 0 0 5px 3px #8c6883;
+    border-radius: 5px;
+    height:600px;
+    }
+
+    .user-info input {
+    width: 250px;
+    height:35px;
+    }
+
+    .Login button {
+    background-color: #2F243A;
+    color: white;
+    width: 130px;
+    height: 40px;
+    border-radius: 5px;;
+    }
+     .Sign-Up button {
+    background-color: #2F243A;
+    color: white;
+    width: 130px;
+    height: 40px;
+    border-radius: 5px;;
+    }
+
+    .sign-up {
+        font-size: medium;
+    }
+
+    .prof-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap:10px;
+    }
+
+
+    .profile-left {
+    text-align: left;
+    width:25%;
+    margin-top:30px;
+    box-shadow: 0 0 5px 3px #8c6883;
+    border-radius: 15px;
+    }
+
+    .profile-right {
+    text-align: left;
+    margin-top:3em;
+    display: flex;
+    flex-direction: column;
+    gap:30px;
+    
+    }
+    .left-top img {
+    width: 35%;
+    height: auto;
+    border-radius:50%;
+    }
+
+    .menu {
+    background-color: #2F243A;
+    color: white;
+    padding: 1em;
+    width:20%;  
+      
+    }
+
+ 
+
+    #request-table th.col-status,
+    #request-table th.col-notes,
+    #request-table td.col-status,
+    #request-table td.col-notes {
+        display: table-cell;
+    }
+
+    /* Restore nth-child for safety */
+    #request-table td:nth-child(4),
+    #request-table td:nth-child(5),
+    #request-table th:nth-child(4),
+    #request-table th:nth-child(5) {
+        display: table-cell;
+    }
+
+    #request-table th,
+    #request-table td {
+        padding: 12px;
+        font-size: 16px;
+    }
+
+
+
+
+
+
+   /*profile*/
+    .right-card {
+        margin:0;
+        padding-left:2.5em;
+    }
+
+    .dash-top{
+        flex-direction: row;
+        gap:20px;
+    }
+    .dash-top-left{
+        margin-right:1em;
+    }
+    .paycard {
+    background-color: white;
+    width: 100%;
+    margin: 2em 2em 0 2em;
+    padding-left:15px;
+    padding-right:15px;
+    padding-bottom: 10px;
+    border-radius: 10px;
+    border-left:#2F243A 4px solid;
+    box-shadow: 0 0 5px 3px #8c6883;
+}
+    .pay-top {
+    display: flex;
+    flex-direction: row;
+    gap:auto;
+    justify-content: center;
+    height:auto;
+    }
+    .pay-bottom{
+        display: flex;
+        flex-direction: row;
+        height:auto;
+    }
+
+    .Employee-Dash
+    {
+        height:100vh;
+        width: auto;
+        
+    }
+    .dash{
+        height: 100vh;
+        
+    }
+    .mobile-nav{display: none;}
+    .menu{display: block;}
+    .all-requests-header button{
+        height:30px;
+    }
+    
+}

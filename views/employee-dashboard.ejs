@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>ALA/Employee Dashboard</title>
+  <link rel="stylesheet" type="text/css" href="/css/CRUD-Styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body class="Employee-Dash">
+    <div class="dash">
+        
+    <section class="menu">
+        <nav class="nav-menu">
+            <h1>ALA</h1>
+            <div class="list">
+                <h3>Dashboard</h3>
+           
+                <ul>
+                    <!-- CHANGED: All links to backend routes -->
+                    <li><a href="/employee/dashboard">Dashboard</a></li>
+                    <li><a href="/employee/profile">Profile</a></li>
+                    <li><a href="/employee/shifts">Shift Requests</a></li>
+                    <li><a href="/employee/timeoff">Request Offs</a></li>
+                    <li><a href="/employee/payroll">Payroll</a></li>
+                    <li><a href="/auth/logout">Logout</a></li>
+                </ul>
+               
+            </div>
+        </nav>
+    </section> 
+
+    <section class="dashboard-content">
+        <div class="mobile-nav">
+          
+            <div class="dropdown">
+                <button class="dropbtn" aria-label="Toggle menu">
+                &#9776; <!-- Hamburger icon -->
+                </button>
+                
+                <div class="dropdown-content">
+                     <!-- CHANGED: Mobile nav links -->
+                     <a href="/employee/dashboard">Dashboard</a>
+                     <a href="/employee/profile">Profile</a>
+                     <a href="/employee/shifts">Shift Requests</a>
+                     <a href="/employee/timeoff">Request Offs</a>
+                     <a href="/employee/payroll">Payroll</a>
+                     <a href="/auth/logout">Logout</a>
+                </div>
+            </div>
+            <h1>ALA | Dashboard</h1>  
+        </div>
+
+        <div class="dashboard-message">
+            <!-- CHANGED: Use EJS to display user name from backend -->
+            <h1>Welcome back, <%= user.name %></h1>
+            <p>Here's a quick overview of your recent activity.</p>
+        </div>
+
+        <section class="dashcard-all">
+            <div class="dash-top">
+                <div class="dash-top-left">
+                    <div class="dashcard">
+                        <a href="/employee/timeoff">
+                            <h2>Time Off Requests</h2>
+                            <!-- CHANGED: Use EJS to display pending count -->
+                            <p>You have <%= pendingTimeOffCount %> pending request<%= pendingTimeOffCount !== 1 ? 's' : '' %> to review.</p>
+                        </a>
+                    </div>
+                    <div class="dashcard">
+                        <a href="/employee/shifts">
+                        <h2>Shift Requests</h2>
+                        <!-- CHANGED: Use EJS to display pending shift count -->
+                        <p>You have <%= pendingShiftCount %> pending shift request<%= pendingShiftCount !== 1 ? 's' : '' %>.</p>
+                        </a>
+                    </div>
+                </div>  
+
+                <div class="dashcard">
+                    <a href="/employee/payroll">
+                        <h2>Upcoming Payroll</h2>
+                        <div id="payweek">
+                            <% if (nextPayroll) { %>
+                                <div>
+                                    <p>Start Date:</p>
+                                    <p><%= new Date(nextPayroll.periodStart).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                                </div>
+                                <div>
+                                    <p>End Date:</p>
+                                    <p><%= new Date(nextPayroll.periodEnd).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                                </div>
+                            <% } else { %>
+                                <p>No upcoming payroll scheduled.</p>
+                            <% } %>
+                        </div>
+                    </a>
+                </div>
+            </div>    
+
+            <div class="dashcard">
+                <a href="/employee/profile">
+                    <h2>To Do List</h2>
+                    <p>You do not have any active tasks. Check out your Profile for more information.</p>
+                </a>
+            </div>
+        </section>
+
+    </section>
+
+<!-- REMOVED All localStorage JavaScript -->
+
+    </div>
+</body>
+</html>

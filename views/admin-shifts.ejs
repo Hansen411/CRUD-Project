@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>ALA/Admin-Shift-Requests</title>
+  <link rel="stylesheet" type="text/css" href="/css/CRUD-Styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+</head>
+<body class="Admin-Dash">
+  <div class="dash">
+    <section class="menu">
+      <nav class="nav-menu">
+        <h1>ALA</h1>
+        <div class="list">
+          <h3>Shift Requests</h3>
+          <ul>
+            <li><a href="/admin/dashboard">Dashboard</a></li>
+            <li><a href="/admin/profile">Profile</a></li>
+            <li><a href="/admin/shifts">Shift Requests</a></li>
+            <li><a href="/admin/timeoff">Request Offs</a></li>
+            <li><a href="/admin/payroll">Payroll</a></li>
+            <li><a href="/auth/logout">Logout</a></li>
+          </ul>
+        </div>
+      </nav>
+    </section>
+
+    <section class="dashboard-content">
+      <div class="mobile-nav">
+          
+            <div class="dropdown">
+                <button class="dropbtn" aria-label="Toggle menu">
+                &#9776;
+                </button>
+                
+                <div class="dropdown-content">
+                     <a href="/admin/dashboard">Dashboard</a>
+                     <a href="/admin/profile">Profile</a>
+                     <a href="/admin/shifts">Shift Requests</a>
+                     <a href="/admin/timeoff">Request Offs</a>
+                     <a href="/admin/payroll">Payroll</a>
+                     <a href="/auth/logout">Logout</a>
+                </div>
+            </div>
+            <h1>ALA | Shift Requests</h1>  
+        </div>
+      <div class="dashboard-message">
+        <h1>Your Employee Shift Requests</h1>
+        <p>Review and Manage Your Shift Requests Below.</p>
+      </div>
+
+      <!-- EMPLOYEE SHIFT REQUESTS -->
+      <div class="employee-requests">
+        <div class="request-summary">
+          <h2>Employee Shift Requests</h2>
+          <table>
+            <tr>
+              <th>Approved Requests</th>
+              <th>Denied Requests</th>
+              <th>Pending Requests</th>
+            </tr>
+            <tr>
+              <td><%= approvedCount %></td>
+              <td><%= deniedCount %></td>
+              <td><%= pendingCount %></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="all-requests">
+          <div class="all-requests-header">
+            <h3>All Shift Requests</h3>
+          </div>
+
+          <table id="request-table">
+            <thead>
+              <tr>
+                <th>Employee ID</th>
+                <th>Shift Type</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (employeeRequests && employeeRequests.length > 0) { %>
+                <% employeeRequests.forEach(shift => { %>
+                  <tr>
+                    <td><%= shift.requestedBy ? shift.requestedBy._id : 'N/A' %></td>
+                    <td><%= shift.shiftType %></td>
+                    <td><%= new Date(shift.date).toLocaleDateString() %></td>
+                    <td><%= shift.status %></td>
+                    <td>
+                      <% if (shift.status === 'pending') { %>
+                        <form action="/admin/shifts/<%= shift._id %>/approve" method="POST" style="display: inline;">
+                          <button type="submit" class="approve-btn">Approve</button>
+                        </form>
+                        <form action="/admin/shifts/<%= shift._id %>/deny" method="POST" style="display: inline;">
+                          <button type="submit" class="decline-btn">Decline</button>
+                        </form>
+                      <% } %>
+                    </td>
+                  </tr>
+                <% }) %>
+              <% } else { %>
+                <tr>
+                  <td colspan="5">No employee shift requests.</td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CREATE OPEN SHIFTS -->
+      <div class="employee-requests">
+        <div class="request-summary">
+          <h2>Create Open Shifts</h2>
+          <table>
+            <tr>
+              <th>Taken Shifts</th>
+              <th>Open Shifts</th>
+            </tr>
+            <tr>
+              <td><%= takenCount %></td>
+              <td><%= openCount %></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="all-requests">
+          <div class="all-requests-header">
+            <h3>Create Shifts</h3>
+            <button id="request-button">Create Shift</button>
+          </div>
+
+          <div class="make-request" style="display: none;">
+            <form action="/admin/shifts/create" method="POST">
+              <label for="shift-type">Shift Type:</label>
+              <select name="shiftType" required>
+                <option value="Morning">Morning Shift</option>
+                <option value="Afternoon">Afternoon Shift</option>
+                <option value="Evening">Evening Shift</option>
+                <option value="Weekend">Weekend Shift</option>
+              </select>
+
+              <div>
+                <label for="date">Date:</label>
+                <input type="date" name="date" required>
+              </div>
+
+              <button type="submit">Submit Shift</button>
+            </form>
+          </div>
+
+          <table id="open-shift-table">
+            <thead>
+              <tr>
+                <th>Employee ID</th>
+                <th>Shift Type</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (adminCreatedShifts && adminCreatedShifts.length > 0) { %>
+                <% adminCreatedShifts.forEach(shift => { %>
+                  <tr>
+                    <td><%= shift.assignedTo ? shift.assignedTo._id : '—' %></td>
+                    <td><%= shift.shiftType %></td>
+                    <td><%= new Date(shift.date).toLocaleDateString() %></td>
+                    <td><%= shift.status %></td>
+                    <td>
+                      <form action="/admin/shifts/<%= shift._id %>/delete" method="POST" style="display: inline;">
+                        <button type="submit" class="delete-btn">Delete</button>
+                      </form>
+                    </td>
+                  </tr>
+                <% }) %>
+              <% } else { %>
+                <tr>
+                  <td colspan="5">No open shifts created yet.</td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ALL EMPLOYEE SHIFTS -->
+      <div id="all-employee-shifts" class="employee-requests">
+        <h1>All Employee Shifts</h1>
+
+        <table id="admin-grouped-shift-table">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Shift Type</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+              <% if (allEmployeeShifts && allEmployeeShifts.length > 0) { %>
+                <% 
+                  // Group shifts by user
+                  const groupedShifts = {};
+                  allEmployeeShifts.forEach(shift => {
+                    const userId = shift.assignedTo ? shift.assignedTo._id.toString() : 'Unassigned';
+                    if (!groupedShifts[userId]) {
+                      groupedShifts[userId] = [];
+                    }
+                    groupedShifts[userId].push(shift);
+                  });
+                %>
+                
+                <% Object.keys(groupedShifts).forEach(userId => { %>
+                  <% const shifts = groupedShifts[userId]; %>
+                  <% shifts.forEach((shift, index) => { %>
+                    <tr>
+                      <% if (index === 0) { %>
+                        <td rowspan="<%= shifts.length %>"><%= userId %></td>
+                      <% } %>
+                      <td><%= shift.shiftType %></td>
+                      <td><%= new Date(shift.date).toLocaleDateString() %></td>
+                    </tr>
+                  <% }) %>
+                <% }) %>
+              <% } else { %>
+                <tr>
+                  <td colspan="3">No employee shifts scheduled yet.</td>
+                </tr>
+              <% } %>
+            </tbody>
+        </table>
+      </div>
+
+      <script>
+        // Toggle create shift form
+        document.getElementById("request-button").addEventListener("click", () => {
+            const formDiv = document.querySelector(".make-request");
+            formDiv.style.display = (formDiv.style.display === "none") ? "block" : "none";
+        });
+      </script>
+
+    </section>
+  </div>
+
+</body>
+</html>
