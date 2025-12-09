@@ -85,7 +85,7 @@
                         <h4>Payment History.</h4>
                         <hr>
                         <p id="ph">Dec 5, 2025.</p>
-                        <table>
+                        <table id="ph-table">
                             <tr>
                                 <th>Gross</th>
                                 <th>Take Home</th>
@@ -97,19 +97,7 @@
                                 <td>56.97</td>
                             </tr>
                         </table>
-                        <hr>
-                        <p id="ph">Nov 21, 2025.</p>
-                        <table>
-                            <tr>
-                                <th>Gross</th>
-                                <th>Take Home</th>
-                                <th>Hours</th>
-                            </tr>
-                            <tr>
-                                <td>$856.96</td>
-                                <td>$729.86</td>
-                                <td>46.88</td>
-                            </tr>
+                        
                         </table>
                         <hr>
                     </div>
@@ -125,113 +113,19 @@
 
 
 <script>
+    /*displays the pay period dates*/
+  const year = new Date().getFullYear();
 
+  const startDate = new Date(year, 11, 1);  
+  const endDate   = new Date(year, 11, 15);
 
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
 
-const activeUser = JSON.parse(localStorage.getItem("activeUser"));
-if (!activeUser) window.location.href = "Login.html";
-const userID = activeUser.userID;
+  document.getElementById("start").textContent =
+    startDate.toLocaleDateString(undefined, options);
 
-document.addEventListener("DOMContentLoaded", () => {
-    showUpcomingApprovedRequests();
-    fillPayPeriodDates();
-    buildCalendarWithPTO();
-});
-
- /*requests*/
-function showUpcomingApprovedRequests() {
-    const key = `requests_${userID}`;
-    const requests = JSON.parse(localStorage.getItem(key)) || [];
-    const today = new Date().toISOString().split("T")[0];
-
-    const upcoming = requests
-        .filter(req => req.status === "Approved" && req.end >= today)
-        .sort((a, b) => new Date(a.start) - new Date(b.start));
-
-    const container = document.getElementById("upcoming-timeoff");
-    container.innerHTML = "";
-
-    if (upcoming.length === 0) {
-        container.innerHTML = "<p>No upcoming time off.</p>";
-        return;
-    }
-
-    upcoming.forEach(req => {
-        const p = document.createElement("p");
-        p.textContent = `${req.start} → ${req.end} (${req.type})`;
-        container.appendChild(p);
-    });
-}
-
- /*pay period days*/
-function fillPayPeriodDates() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth();
-
-    const startDate = new Date(year, month, 1);
-    const endDate = new Date(year, month, 15);
-
-    const options = { year: "numeric", month: "long", day: "numeric" };
-
-    document.getElementById("start").textContent =
-        startDate.toLocaleDateString(undefined, options);
-
-    document.getElementById("end").textContent =
-        endDate.toLocaleDateString(undefined, options);
-}
-
-
- /*CALENDAR*/
-
-function buildCalendarWithPTO() {
-    const calendarContainer = document.getElementById("calendar");
-    const today = new Date();
-    const month = today.getMonth();
-    const year = today.getFullYear();
-
-    const key = `requests_${userID}`;
-    const requests = JSON.parse(localStorage.getItem(key)) || [];
-    const approved = requests.filter(req => req.status === "Approved");
-
-    const highlightDates = new Set();
-
-    approved.forEach(req => {
-        let start = new Date(req.start);
-        let end = new Date(req.end);
-
-        while (start <= end) {
-            highlightDates.add(start.toISOString().split("T")[0]);
-            start.setDate(start.getDate() + 1);
-        }
-    });
-
-    const firstDay = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    let html = `<h3>${today.toLocaleString("default", { month: "long" })} ${year}</h3>`;
-    html += `
-        <table class="calendar-table">
-            <tr>
-                <th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th>
-            </tr><tr>
-    `;
-
-    for (let i = 0; i < firstDay; i++) html += "<td></td>";
-
-    for (let day = 1; day <= daysInMonth; day++) {
-        const ds = `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
-        const highlight = highlightDates.has(ds);
-
-        if ((day + firstDay - 1) % 7 === 0 && day !== 1) html += "</tr><tr>";
-
-        html += `<td class="${highlight ? "pto" : ""}">${day}</td>`;
-    }
-
-    html += "</tr></table>";
-
-    calendarContainer.innerHTML = html;
-}
+  document.getElementById("end").textContent =
+    endDate.toLocaleDateString(undefined, options);
 </script>
 
 

@@ -48,6 +48,7 @@
     border-radius: 5px;
     margin-left: auto;
     margin-right: auto;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .sign-up {
@@ -114,6 +115,7 @@ footer {
 .ProfilePage{
     text-align: center;
     margin:0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 .prof-header {
     background-color: #d485bd;
@@ -158,6 +160,7 @@ footer {
     border:none;
     font-size: small;
     align-items: end;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .right-card .card-edit button:hover {
@@ -330,6 +333,7 @@ footer {
     gap:0;
     height: 100%;
     width: auto;
+    font-family: Arial, Helvetica, sans-serif;
     
 }
 
@@ -464,6 +468,7 @@ display: flex;
     gap:0;
     height: 100vh;
     width: auto;
+    font-family: Arial, Helvetica, sans-serif;
    
 }
 
@@ -556,7 +561,29 @@ display: flex;
     height: 30px;
     border-radius: 5px;;
     margin-right: 0;
+    font-family: Arial, Helvetica, sans-serif;
     
+}
+.approve{
+    background-color: green;
+    border:none;
+    color: white;
+    width: 80px;
+    height: 30px;
+    border-radius: 5px;;
+    margin-right: 0;
+    
+}
+
+.reject{
+    background-color: #ff4d4d;
+    border:none;
+    color: white;
+    width: 80px;
+    height: 30px;
+    border-radius: 5px;;
+    margin-left: 5px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .decline-btn {
@@ -567,6 +594,7 @@ display: flex;
     height: 30px;
     border-radius: 5px;;
     margin-left: 5px;
+    font-family: Arial, Helvetica, sans-serif;
     
 }
 
@@ -602,6 +630,7 @@ display: flex;
     align-items: end;
     border-radius: 5px;
     font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .make-request button:hover,
@@ -611,10 +640,7 @@ display: flex;
 }
 
 
-/* ------------------------------------
-   MOBILE FIRST (default)
-   Hide STATUS + NOTES (headers + cells)
-------------------------------------- */
+
 #request-table th.col-status,
 #request-table th.col-notes,
 #request-table td.col-status,
@@ -622,7 +648,6 @@ display: flex;
     display: none;
 }
 
-/* Make sure any nth-child fallback also hides them */
 #request-table td:nth-child(4),
 #request-table td:nth-child(5),
 #request-table th:nth-child(4),
@@ -630,7 +655,6 @@ display: flex;
     display: none;
 }
 
-/* Mobile table spacing improvements */
 #request-table th,
 #request-table td {
     padding: 8px;
@@ -681,6 +705,7 @@ display: flex;
     margin-left: auto;
     margin-right:auto;
     font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
 
 }
 
@@ -692,6 +717,7 @@ display: flex;
     border-radius: 5px;
     font-weight: bold;
     color:white;
+    font-family: Arial, Helvetica, sans-serif;
 
 }
 
@@ -747,7 +773,7 @@ display: flex;
     margin-right:8px;
     margin-bottom:4px;
 }
-
+/*calendar not used*/
 .calendar-table {
     width: 100%;
     border-collapse: collapse;
@@ -788,6 +814,7 @@ table th, table td {
     padding-right:6px;   /* Optional: spacing for readability */
     padding-left:6px;
 }
+
 
 /* MOBILE-FIRST STYLING */
 
@@ -885,8 +912,9 @@ table th, table td {
     .menu {
     background-color: #2F243A;
     color: white;
-    padding-bottom: 10em;
-    width:20%;  
+    padding-right:15px;
+    padding-left:10px;
+    width:auto;  
     overflow-y: auto;
     
     

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>ALA/Employee Dashboard</title>
+  <title>ALA/Admin-Payroll</title>
   <link rel="stylesheet" type="text/css" href="CRUD-Styles.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -12,7 +12,7 @@
             <nav class="nav-menu">
                 <h1>ALA</h1>
                 <div class="list">
-                    <h3>Dashboard</h3>
+                    <h3>Payroll</h3>
                 
                     <ul>
                         <li><a href="Admin-dash.html">Dashboard</a></li>
@@ -43,7 +43,7 @@
                      <a href="Login.html">Logout</a>
                 </div>
             </div>
-            <h1>ALA | Dashboard</h1>  
+            <h1>ALA | Payroll</h1>  
         </div>
             <div class="dashboard-message">
                 <h1>Welcome back, <span id="profile-employee-id"></span></h1>
@@ -54,17 +54,33 @@
             <div class="adminpay">
                 <h3>Approve Time Cards</h3>
                 <hr>
-                <table id="adminpayroll">
-                    <tr>
-                        <th>EmployeeID</th>
-                        <th>Shift Type</th>
-                        <th>Hours</th>
-                        <th>Gross</th>
-                        <th>Action</th>
-                    </tr>
-                </table>
 
+                <table id="adminpayroll">
+                    <thead>
+                        <tr>
+                            <th>Employee ID</th>
+                            <th>Pay Period</th>
+                            <th>Total Hours</th>
+                            <th>Gross</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>UserID</td>
+                            <td>date range</td>
+                            <td>45</td>
+                            <td>$1600.00</td>
+                            <td>
+                                <button type="submit" class="approve">Approve</button>
+                                <button type="submit" class="reject">Reject</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+
+
 
 
         </section>
@@ -74,5 +90,10 @@
 
 
     </div>
+
+
+
+
+
 </body>
 </html>
