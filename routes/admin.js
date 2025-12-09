@@ -62,28 +62,30 @@ router.get('/shifts', async (req, res) => {
     // Employee shift requests (they created)
     const employeeRequests = await Shift.find({ 
       isEmployeeRequest: true
-    }).populate('requestedBy', '_id name email').sort({ date: 1 });
+    }).populate('requestedBy', '_id name email').sort({ date: 1 }); // Sort by date ascending
 
     // Count by status
     const approvedCount = employeeRequests.filter(s => s.status === 'approved').length;
     const deniedCount = employeeRequests.filter(s => s.status === 'denied').length;
     const pendingCount = employeeRequests.filter(s => s.status === 'pending').length;
 
-    // Admin-created shifts
+    // Admin-created shifts - ONLY FUTURE SHIFTS
     const adminCreatedShifts = await Shift.find({ 
-      isEmployeeRequest: false
-    }).populate('assignedTo', '_id name email').sort({ date: 1 });
+      isEmployeeRequest: false,
+      date: { $gte: new Date() } // Only show future/today shifts
+    }).populate('assignedTo', '_id name email').sort({ date: 1 }); // Sort by date ascending
 
     // Count open vs taken
     const openCount = adminCreatedShifts.filter(s => s.status === 'open').length;
     const takenCount = adminCreatedShifts.filter(s => s.status === 'taken').length;
 
-    // All employee shifts (approved + taken)
+    // All employee shifts (approved + taken) - ONLY FUTURE
     const allEmployeeShifts = await Shift.find({
       $or: [
         { status: 'approved' },
         { status: 'taken' }
-      ]
+      ],
+      date: { $gte: new Date() } // Only future shifts
     }).populate('assignedTo', '_id name email').sort({ date: 1 });
 
     res.render('admin-shifts', {
@@ -154,9 +156,38 @@ router.post('/shifts/create', async (req, res) => {
   try {
     const { shiftType, date } = req.body;
 
+    // Set default times based on shift type
+    let startTime, endTime;
+    switch(shiftType) {
+      case 'Morning':
+        startTime = '8:00 AM';
+        endTime = '4:00 PM';
+        break;
+      case 'Afternoon':
+        startTime = '12:00 PM';
+        endTime = '8:00 PM';
+        break;
+      case 'Evening':
+        startTime = '4:00 PM';
+        endTime = '12:00 AM';
+        break;
+      case 'Weekend':
+        startTime = '9:00 AM';
+        endTime = '5:00 PM';
+        break;
+      default:
+        startTime = '9:00 AM';
+        endTime = '5:00 PM';
+    }
+
+    // Fix timezone issue: add time to the date string
+    const shiftDate = new Date(date + 'T12:00:00'); // Set to noon to avoid timezone issues
+
     const newShift = new Shift({
       shiftType,
-      date,
+      date: shiftDate,
+      startTime,
+      endTime,
       postedBy: req.user._id,
       status: 'open',
       isEmployeeRequest: false

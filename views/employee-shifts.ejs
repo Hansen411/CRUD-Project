@@ -67,7 +67,7 @@
                         <% upcomingSchedule.forEach(shift => { %>
                             <tr>
                                 <td><%= shift.shiftType %></td>
-                                <td><%= new Date(shift.date).toLocaleDateString() %></td>
+                                <td><%= new Date(shift.date).toLocaleDateString('en-US', { timeZone: 'UTC' }) %></td>
                             </tr>
                         <% }) %>
                     <% } else { %>
@@ -137,7 +137,7 @@
                                 <% myRequests.forEach(shift => { %>
                                     <tr>
                                         <td><%= shift.shiftType %></td>
-                                        <td><%= new Date(shift.date).toLocaleDateString() %></td>
+                                        <td><%= new Date(shift.date).toLocaleDateString('en-US', { timeZone: 'UTC' }) %></td>
                                         <td><%= shift.status %></td>
                                         <td>
                                             <% if (shift.status === 'pending') { %>
@@ -194,7 +194,7 @@
                                 <% adminPostedShifts.forEach(shift => { %>
                                     <tr>
                                         <td><%= shift.shiftType %></td>
-                                        <td><%= new Date(shift.date).toLocaleDateString() %></td>
+                                        <td><%= new Date(shift.date).toLocaleDateString('en-US', { timeZone: 'UTC' }) %></td>
                                         <td><%= shift.status %></td>
                                         <td>
                                             <% if (shift.status === 'open') { %>

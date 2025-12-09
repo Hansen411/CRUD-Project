@@ -78,8 +78,8 @@
                                 <tr>
                                     <td><%= request.employeeId._id %></td>
                                     <td><%= request.reason %></td>
-                                    <td><%= new Date(request.startDate).toLocaleDateString() %></td>
-                                    <td><%= new Date(request.endDate).toLocaleDateString() %></td>
+                                    <td><%= new Date(request.startDate).toLocaleDateString('en-US', { timeZone: 'UTC' }) %></td>
+                                    <td><%= new Date(request.endDate).toLocaleDateString('en-US', { timeZone: 'UTC' }) %></td>
                                     <td><%= request.status %></td>
                                     <td><%= request.adminNotes || 'N/A' %></td>
                                     <td>
@@ -128,8 +128,8 @@
                                     <tr>
                                         <td><%= request.employeeId._id %></td>
                                         <td><%= request.reason %></td>
-                                        <td><%= new Date(request.startDate).toLocaleDateString() %></td>
-                                        <td><%= new Date(request.endDate).toLocaleDateString() %></td>
+                                        <td><%= new Date(request.startDate).toLocaleDateString('en-US', { timeZone: 'UTC' }) %></td>
+                                        <td><%= new Date(request.endDate).toLocaleDateString('en-US', { timeZone: 'UTC' }) %></td>
                                         <td><%= request.status %></td>
                                         <td><%= request.adminNotes || 'N/A' %></td>
                                     </tr>

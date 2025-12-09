@@ -88,7 +88,7 @@
                   <tr>
                     <td><%= shift.requestedBy ? shift.requestedBy._id : 'N/A' %></td>
                     <td><%= shift.shiftType %></td>
-                    <td><%= new Date(shift.date).toLocaleDateString() %></td>
+                    <td><%= new Date(shift.date).toLocaleDateString('en-US', { timeZone: 'UTC' }) %></td>
                     <td><%= shift.status %></td>
                     <td>
                       <% if (shift.status === 'pending') { %>
@@ -169,7 +169,7 @@
                   <tr>
                     <td><%= shift.assignedTo ? shift.assignedTo._id : '—' %></td>
                     <td><%= shift.shiftType %></td>
-                    <td><%= new Date(shift.date).toLocaleDateString() %></td>
+                    <td><%= new Date(shift.date).toLocaleDateString('en-US', { timeZone: 'UTC' }) %></td>
                     <td><%= shift.status %></td>
                     <td>
                       <form action="/admin/shifts/<%= shift._id %>/delete" method="POST" style="display: inline;">
@@ -222,7 +222,7 @@
                         <td rowspan="<%= shifts.length %>"><%= userId %></td>
                       <% } %>
                       <td><%= shift.shiftType %></td>
-                      <td><%= new Date(shift.date).toLocaleDateString() %></td>
+                      <td><%= new Date(shift.date).toLocaleDateString('en-US', { timeZone: 'UTC' }) %></td>
                     </tr>
                   <% }) %>
                 <% }) %>
