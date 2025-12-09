@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>ALA/Employee-Payroll</title>
+  <link rel="stylesheet" type="text/css" href="/css/CRUD-Styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body class="Employee-Dash">
+    <div class="dash">
+        <section class="menu">
+            <nav class="nav-menu">
+                <h1>ALA</h1>
+                <div class="list">
+                    <h3>Payroll</h3>
+                
+                    <ul>
+                        <li><a href="/employee/dashboard">Dashboard</a></li>
+                        <li><a href="/employee/profile">Profile</a></li>
+                        <li><a href="/employee/shifts">Shift Requests</a></li>
+                        <li><a href="/employee/timeoff">Request Offs</a></li>
+                        <li><a href="/employee/payroll">Payroll</a></li>
+                        <li><a href="/auth/logout">Logout</a></li>
+                    </ul>
+                    
+                </div>
+            </nav>
+        </section>
+
+        <section class="dashboard-content">
+            <div class="mobile-nav">
+          
+            <div class="dropdown">
+                <button class="dropbtn" aria-label="Toggle menu">
+                &#9776;
+                </button>
+                
+                <div class="dropdown-content">
+                     <a href="/employee/dashboard">Dashboard</a>
+                     <a href="/employee/profile">Profile</a>
+                     <a href="/employee/shifts">Shift Requests</a>
+                     <a href="/employee/timeoff">Request Offs</a>
+                     <a href="/employee/payroll">Payroll</a>
+                     <a href="/auth/logout">Logout</a>
+                </div>
+            </div>
+            <h1>ALA | Payroll</h1>  
+        </div>
+
+            <div class="dashboard-message">
+                <h1>Your Payroll Information</h1>
+                <p>Review your recent pay stubs and payment history below.</p>
+            </div>
+           
+            <div>
+             <div class="payroll-options">
+                <div class="pay-top">
+                    <div class="paycard" id="paycard-section">
+                        <h4>Upcoming Payroll</h4>
+                        <hr>
+                        <h3>Bi-Monthly Pay Period</h3>
+                        <div id="payweek">
+                            <% if (upcomingPayroll) { %>
+                                <div id="S">
+                                    <p>Start Date:</p>
+                                    <p><%= new Date(upcomingPayroll.periodStart).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                                </div>
+                                <div id="S">
+                                    <p>End Date:</p>
+                                    <p><%= new Date(upcomingPayroll.periodEnd).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                                </div>
+                            <% } else { %>
+                                <p>No upcoming payroll scheduled.</p>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pay-bottom">
+                    <div class="paycard">
+                        <h4>Payment History</h4>
+                        <hr>
+                        
+                        <% if (payrollHistory && payrollHistory.length > 0) { %>
+                            <% payrollHistory.forEach(payroll => { %>
+                                <p id="ph"><%= new Date(payroll.periodEnd).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></p>
+                                <table>
+                                    <tr>
+                                        <th>Gross</th>
+                                        <th>Take Home</th>
+                                        <th>Hours</th>
+                                    </tr>
+                                    <tr>
+                                        <td>$<%= payroll.grossPay.toFixed(2) %></td>
+                                        <td>$<%= payroll.netPay.toFixed(2) %></td>
+                                        <td><%= payroll.hoursWorked.toFixed(2) %></td>
+                                    </tr>
+                                </table>
+                                <hr>
+                            <% }) %>
+                        <% } else { %>
+                            <p>No payment history available.</p>
+                        <% } %>
+                    </div>
+                </div>
+             </div>
+             </div>
+        </section>
+    </div>
+
+</body>
+</html>

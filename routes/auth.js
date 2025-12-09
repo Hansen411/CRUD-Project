@@ -1,13 +1,18 @@
+// ============================================
 // AUTHENTICATION ROUTES
 // Sign up, log in, log out
+// ============================================
 
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const User = require('../models/User');
 
-//sign up
-// GET /auth/signup - Shows signup page
+// ============================================
+// SIGN UP ROUTES
+// ============================================
+
+// GET /auth/signup - Show signup page
 router.get('/signup', (req, res) => {
   res.render('signup');
 });
@@ -15,7 +20,7 @@ router.get('/signup', (req, res) => {
 // POST /auth/signup - Handle signup form
 router.post('/signup', async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email: email.toLowerCase() });
@@ -23,12 +28,18 @@ router.post('/signup', async (req, res) => {
       return res.status(400).send('Email already registered');
     }
 
+    // AUTO-DETECT ADMIN: If email ends with @admin.com, make them admin
+    let role = 'employee'; // Default
+    if (email.toLowerCase().endsWith('@admin.com')) {
+      role = 'admin';
+    }
+
     // Create new user
     const newUser = new User({
       name,
       email: email.toLowerCase(),
-      password, // hashed by User model
-      role: role || 'employee' 
+      password, // Will be hashed automatically by User model
+      role: role // Automatically set based on email
     });
 
     await newUser.save();
@@ -54,8 +65,9 @@ router.post('/signup', async (req, res) => {
   }
 });
 
-
+// ============================================
 // LOGIN ROUTES
+// ============================================
 
 // GET /auth/login - Show login page
 router.get('/login', (req, res) => {
@@ -74,8 +86,9 @@ router.post('/login', passport.authenticate('local', {
   }
 });
 
-
+// ============================================
 // LOGOUT ROUTE
+// ============================================
 
 // GET /auth/logout - Log out user
 router.get('/logout', (req, res) => {

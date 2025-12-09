@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>ALA/Admin-Dashboard</title>
+  <link rel="stylesheet" type="text/css" href="/css/CRUD-Styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body class="Admin-Dash">
+    <div class="dash">
+    <section class="menu">
+        <nav class="nav-menu">
+            <h1>ALA</h1>
+            <div class="list">
+                <h3>Dashboard</h3>
+                <ul>
+                    <li><a href="/admin/dashboard">Dashboard</a></li>
+                    <li><a href="/admin/profile">Profile</a></li>
+                    <li><a href="/admin/shifts">Shift Requests</a></li>
+                    <li><a href="/admin/timeoff">Request Offs</a></li>
+                    <li><a href="/admin/payroll">Payroll</a></li>
+                    <li><a href="/auth/logout">Logout</a></li>
+                </ul>
+                
+            </div>
+        </nav>
+    </section>
+
+    <section class="dashboard-content">
+        <div class="mobile-nav">
+          
+            <div class="dropdown">
+                <button class="dropbtn" aria-label="Toggle menu">
+                &#9776;
+                </button>
+                
+                <div class="dropdown-content">
+                     <a href="/admin/dashboard">Dashboard</a>
+                     <a href="/admin/profile">Profile</a>
+                     <a href="/admin/shifts">Shift Requests</a>
+                     <a href="/admin/timeoff">Request Offs</a>
+                     <a href="/admin/payroll">Payroll</a>
+                     <a href="/auth/logout">Logout</a>
+                </div>
+            </div>
+            <h1>ALA | Dashboard</h1>  
+        </div>
+
+        <div class="dashboard-message">
+            <h1>Welcome back, <%= user.name %></h1>
+            <p>Here's a quick overview of your recent activity.</p>
+        </div>
+
+        <section class="dashcard-all">
+            <div class="dash-top">
+                <div class="dash-top-left">
+                    <div class="dashcard">
+                        <a href="/admin/timeoff">
+                            <h2>Time Off Requests</h2>
+                            <p>You have <%= pendingTimeOff %> pending request<%= pendingTimeOff !== 1 ? 's' : '' %> to review.</p>
+                        </a>
+                    </div>
+                    <div class="dashcard">
+                        <a href="/admin/shifts">
+                        <h2>Shift Requests</h2>
+                        <p>You have <%= pendingShifts %> pending shift request<%= pendingShifts !== 1 ? 's' : '' %>.</p>
+                        </a>
+                    </div>
+                </div>  
+
+                <div class="dashcard">
+                    <a href="/admin/payroll">
+                        <h2>Upcoming Payroll</h2>
+                        <div id="payweek">
+                            <div>
+                                <p>Start Date:</p>
+                                <p id="start"></p>
+                            </div>
+                            <div>
+                                <p>End Date:</p>
+                                <p id="end"></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>    
+
+            <div class="dashcard">
+                <a href="/admin/profile">
+                    <h2>To Do List</h2>
+                    <p>You do not have any active tasks. Check out your Profile for more information.</p>
+                </a>
+            </div>
+        </section>
+
+    </section>
+
+<script>
+// Calculate pay period dates client-side
+function fillPayPeriodDates() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+
+    let startDate, endDate;
+
+    if (today.getDate() <= 15) {
+        startDate = new Date(year, month, 1);
+        endDate = new Date(year, month, 15);
+    } else {
+        startDate = new Date(year, month, 16);
+        endDate = new Date(year, month + 1, 0);
+    }
+
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    document.getElementById("start").textContent = startDate.toLocaleDateString(undefined, options);
+    document.getElementById("end").textContent = endDate.toLocaleDateString(undefined, options);
+}
+
+fillPayPeriodDates();
+</script>
+
+    </div>
+</body>
+</html>

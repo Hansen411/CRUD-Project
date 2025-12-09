@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>ALA/Employee-Request-Offs</title>
+  <link rel="stylesheet" type="text/css" href="/css/CRUD-Styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body class="Employee-Dash">
+    <div class="dash">
+    <section class="menu">
+        <nav class="nav-menu">
+            <h1>ALA</h1>
+            <div class="list">
+                <h3>Request Offs</h3>
+            
+                <ul>
+                    <li><a href="/employee/dashboard">Dashboard</a></li>
+                    <li><a href="/employee/profile">Profile</a></li>
+                    <li><a href="/employee/shifts">Shift Requests</a></li>
+                    <li><a href="/employee/timeoff">Request Offs</a></li>
+                    <li><a href="/employee/payroll">Payroll</a></li>
+                    <li><a href="/auth/logout">Logout</a></li>
+                </ul>
+                
+            </div>
+        </nav>
+    </section>
+
+    <section class="dashboard-content">
+        <div class="mobile-nav">
+          
+            <div class="dropdown">
+                <button class="dropbtn" aria-label="Toggle menu">
+                &#9776;
+                </button>
+                
+                <div class="dropdown-content">
+                     <a href="/employee/dashboard">Dashboard</a>
+                     <a href="/employee/profile">Profile</a>
+                     <a href="/employee/shifts">Shift Requests</a>
+                     <a href="/employee/timeoff">Request Offs</a>
+                     <a href="/employee/payroll">Payroll</a>
+                     <a href="/auth/logout">Logout</a>
+                </div>
+            </div>
+            <h1>ALA | Request Off</h1>  
+        </div>
+
+        <div class="dashboard-message">
+            <h1>Time Off Requests</h1>
+            <p>Review and manage your Time Off requests below.</p>
+        </div>
+
+        <!-- UPCOMING TIME OFF (APPROVED ONLY) -->
+        <div class="employee-requests">
+            <h2>Your Upcoming Time Off</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time Off Type</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (approvedTimeOff && approvedTimeOff.length > 0) { %>
+                        <% approvedTimeOff.forEach(request => { %>
+                            <tr>
+                                <td><%= request.reason %></td>
+                                <td><%= new Date(request.startDate).toLocaleDateString('en-US', { timeZone: 'UTC' }) %></td>
+                                <td><%= new Date(request.endDate).toLocaleDateString('en-US', { timeZone: 'UTC' }) %></td>
+                                <td><%= request.adminNotes || 'N/A' %></td>
+                            </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="4">No approved time off scheduled.</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+       
+        <div>
+            <div class="employee-requests">
+                <div class="request-summary">
+                    <h2>Your Time Off Requests</h2>
+
+                <div class="all-requests">
+                    <div class="all-requests-header">
+                        <h3>All Time Off Requests</h3>
+                        <button id="request-button">Make Request</button>
+                    </div>
+                    
+                    <div class="make-request" style="display: none;">
+                        <form action="/employee/timeoff/request" method="POST">
+                            <label for="time-off-type">Time Off Type:</label>
+                            <select name="reason" required>
+                                <option value="Vacation">Vacation</option>
+                                <option value="Sick Leave">Sick Leave</option>
+                                <option value="Personal Leave">Personal Leave</option>
+                                <option value="Other">Other</option>
+                            </select>
+
+                            <div>
+                                <label for="start-date">Start Date:</label>
+                                <input type="date" name="startDate" required>
+
+                                <label for="end-date">End Date:</label>
+                                <input type="date" name="endDate" required>
+                            </div>
+
+                            <label for="Notes">Notes:</label>
+                            <textarea name="notes" rows="4"></textarea>
+
+                            <button type="submit">Submit Request</button>
+                        </form>
+                    </div>
+                    
+                    <hr>
+                    <table id="request-table">
+                        <thead>
+                            <tr>
+                                <th>Time Off Type</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (requests && requests.length > 0) { %>
+                                <% requests.forEach(request => { %>
+                                    <tr>
+                                        <td><%= request.reason %></td>
+                                        <td><%= new Date(request.startDate).toLocaleDateString('en-US', { timeZone: 'UTC' }) %></td>
+                                        <td><%= new Date(request.endDate).toLocaleDateString('en-US', { timeZone: 'UTC' }) %></td>
+                                        <td><%= request.status %></td>
+                                        <td><%= request.adminNotes || 'N/A' %></td>
+                                        <td>
+                                            <% if (request.status === 'pending') { %>
+                                                <form action="/employee/timeoff/<%= request._id %>/cancel" method="POST" style="display: inline;">
+                                                    <button type="submit" class="delete-btn">Delete</button>
+                                                </form>
+                                            <% } %>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="6">No time-off requests yet.</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.getElementById("request-button").addEventListener("click", function () {
+                const formSection = document.querySelector(".make-request");
+                formSection.style.display = 
+                    formSection.style.display === "block" ? "none" : "block";
+            });
+        </script>
+
+    </section>
+
+    </div>
+</body>
+
+</html>

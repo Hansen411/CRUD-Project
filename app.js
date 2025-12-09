@@ -11,8 +11,8 @@ const app = express();
 
 // mongo db connect
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log(' MongoDB Connected'))
-  .catch(err => console.error(' MongoDB Connection Error:', err));
+  .then(() => console.log('MongoDB Connected'))
+  .catch(err => console.error('MongoDB Connection Error:', err));
 
 // passport config
 require('./config/passport')(passport);
@@ -48,22 +48,19 @@ app.use((req, res, next) => {
 // ejs
 app.set('view engine', 'ejs');
 
-//routes
-//const authRoutes = require('./routes/auth');
-//const employeeRoutes = require('./routes/employee');
-//const adminRoutes = require('./routes/admin');
-//const apiRoutes = require('./routes/api'); // add api later for bonus
-
+// routes
+const authRoutes = require('./routes/auth');
+const employeeRoutes = require('./routes/employee');
+const adminRoutes = require('./routes/admin');
 
 app.get('/', (req, res) => {
-  res.render('login'); // Shows login page by default
+  res.render('login');
 });
 
 // Use routes
-//app.use('/auth', authRoutes);           // /auth/login, /auth/signup, etc.
-//app.use('/employee', employeeRoutes);   // /employee/dashboard, etc.
-//app.use('/admin', adminRoutes);         // /admin/dashboard, etc.
-//app.use('/api', apiRoutes);             // /api/shifts, etc. (bonus)
+app.use('/auth', authRoutes);
+app.use('/employee', employeeRoutes);
+app.use('/admin', adminRoutes);
 
 // ERROR HANDLING
 
@@ -81,5 +78,5 @@ app.use((err, req, res, next) => {
 // START SERVER
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });

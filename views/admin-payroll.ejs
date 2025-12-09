@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>ALA/Admin-Payroll</title>
+  <link rel="stylesheet" type="text/css" href="/css/CRUD-Styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body class="Admin-Dash">
+    <div class="dash">
+        <section class="menu">
+            <nav class="nav-menu">
+                <h1>ALA</h1>
+                <div class="list">
+                    <h3>Payroll</h3>
+                
+                    <ul>
+                        <li><a href="/admin/dashboard">Dashboard</a></li>
+                        <li><a href="/admin/profile">Profile</a></li>
+                        <li><a href="/admin/shifts">Shift Requests</a></li>
+                        <li><a href="/admin/timeoff">Request Offs</a></li>
+                        <li><a href="/admin/payroll">Payroll</a></li>
+                        <li><a href="/auth/logout">Logout</a></li>
+                    </ul>
+                    
+                </div>
+            </nav>
+        </section>
+
+        <section class="dashboard-content">
+            <div class="mobile-nav">
+          
+            <div class="dropdown">
+                <button class="dropbtn" aria-label="Toggle menu">
+                &#9776;
+                </button>
+                
+                <div class="dropdown-content">
+                     <a href="/admin/dashboard">Dashboard</a>
+                     <a href="/admin/profile">Profile</a>
+                     <a href="/admin/shifts">Shift Requests</a>
+                     <a href="/admin/timeoff">Request Offs</a>
+                     <a href="/admin/payroll">Payroll</a>
+                     <a href="/auth/logout">Logout</a>
+                </div>
+            </div>
+            <h1>ALA | Payroll</h1>  
+        </div>
+
+            <div class="dashboard-message">
+                <h1>Welcome back, <%= user.name %></h1>
+                <p>Here's a quick overview of payroll activity.</p>
+            </div>
+
+            <div class="adminpay">
+                <h3>Approve Time Cards</h3>
+                <hr>
+                <table id="adminpayroll">
+                    <thead>
+                        <tr>
+                            <th>Employee ID</th>
+                            <th>Pay Period</th>
+                            <th>Hours</th>
+                            <th>Gross</th>
+                            <th>Net Pay</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (pendingPayroll && pendingPayroll.length > 0) { %>
+                            <% pendingPayroll.forEach(payroll => { %>
+                                <tr>
+                                    <td><%= payroll.employeeId._id %></td>
+                                    <td><%= new Date(payroll.periodStart).toLocaleDateString() %> - <%= new Date(payroll.periodEnd).toLocaleDateString() %></td>
+                                    <td><%= payroll.hoursWorked.toFixed(2) %></td>
+                                    <td>$<%= payroll.grossPay.toFixed(2) %></td>
+                                    <td>$<%= payroll.netPay.toFixed(2) %></td>
+                                    <td><%= payroll.status %></td>
+                                    <td>
+                                        <% if (payroll.status === 'pending') { %>
+                                            <form action="/admin/payroll/<%= payroll._id %>/approve" method="POST" style="display: inline;">
+                                                <button type="submit" class="approve-btn">Approve</button>
+                                            </form>
+                                        <% } %>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="7">No pending payroll to approve.</td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+            
+
+            <!-- ALL PAYROLL HISTORY -->
+            <div class="adminpay">
+                <h3>All Payroll Records</h3>
+                <hr>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Employee ID</th>
+                            <th>Pay Period</th>
+                            <th>Hours</th>
+                            <th>Gross</th>
+                            <th>Net Pay</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (allPayroll && allPayroll.length > 0) { %>
+                            <% allPayroll.forEach(payroll => { %>
+                                <tr>
+                                    <td><%= payroll.employeeId._id %></td>
+                                    <td><%= new Date(payroll.periodStart).toLocaleDateString() %> - <%= new Date(payroll.periodEnd).toLocaleDateString() %></td>
+                                    <td><%= payroll.hoursWorked.toFixed(2) %></td>
+                                    <td>$<%= payroll.grossPay.toFixed(2) %></td>
+                                    <td>$<%= payroll.netPay.toFixed(2) %></td>
+                                    <td><%= payroll.status %></td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="6">No payroll records yet.</td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

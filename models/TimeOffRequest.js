@@ -1,7 +1,12 @@
+// ============================================
+// TIME OFF REQUEST MODEL
+// Employees request time off, admins approve/deny
+// ============================================
+
 const mongoose = require('mongoose');
 
-const shiftSchema = new mongoose.Schema({
-    employeeId: {
+const timeOffRequestSchema = new mongoose.Schema({
+  employeeId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
@@ -26,13 +31,13 @@ const shiftSchema = new mongoose.Schema({
   reviewedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    default: null // Admin 
+    default: null // Admin who approved/denied
   },
   reviewedAt: {
     type: Date,
     default: null
   },
-   adminNotes: String // Admin can add notes when reviewing
+  adminNotes: String // Admin can add notes when reviewing
 }, {
   timestamps: true
 });

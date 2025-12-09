@@ -64,10 +64,9 @@ const payrollSchema = new mongoose.Schema({
 });
 
 // Calculate gross and net pay before saving
-payrollSchema.pre('save', function(next) {
+payrollSchema.pre('save', function() {
   this.grossPay = this.hoursWorked * this.hourlyRate;
   this.netPay = this.grossPay - this.deductions;
-  next();
 });
 
 module.exports = mongoose.model('Payroll', payrollSchema);

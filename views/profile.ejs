@@ -1,0 +1,25 @@
+<div class="profile-info">
+    <h2>Profile Information</h2>
+    
+    <p><strong>Name:</strong> <%= user.name %></p>
+    <p><strong>Email:</strong> <%= user.email %></p>
+    
+    <!-- CONDITIONAL: Show different status based on role -->
+    <% if (user.role === 'admin') { %>
+        <p><strong>Status:</strong> Administrator</p>
+    <% } else { %>
+        <p><strong>Status:</strong> Employee</p>
+    <% } %>
+    
+    <!-- CONDITIONAL: Show admin-only info -->
+    <% if (user.role === 'admin') { %>
+        <p><strong>Access Level:</strong> Full Access</p>
+        <p><strong>Department:</strong> Management</p>
+    <% } %>
+    
+    <!-- CONDITIONAL: Show employee-only info -->
+    <% if (user.role === 'employee') { %>
+        <p><strong>Hire Date:</strong> <%= new Date(user.hireDate).toLocaleDateString() %></p>
+        <p><strong>Department:</strong> <%= user.department || 'Not Assigned' %></p>
+    <% } %>
+</div>
