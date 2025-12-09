@@ -1,7 +1,5 @@
-// ============================================
 // TIME OFF REQUEST MODEL
 // Employees request time off, admins approve/deny
-// ============================================
 
 const mongoose = require('mongoose');
 

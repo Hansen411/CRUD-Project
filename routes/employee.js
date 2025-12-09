@@ -12,9 +12,7 @@ const Payroll = require('../models/Payroll');
 // All employee routes require authentication
 router.use(isAuthenticated);
 
-// ============================================
 // DASHBOARD
-// ============================================
 
 // GET /employee/dashboard
 router.get('/dashboard', async (req, res) => {
@@ -266,14 +264,14 @@ router.get('/payroll', async (req, res) => {
     // Get upcoming payroll period (ONLY approved or paid)
     const upcomingPayroll = await Payroll.findOne({ 
       employeeId: req.user._id,
-      status: { $in: ['approved', 'paid'] }, // ← IMPORTANT: Only approved/paid
+      status: { $in: ['approved', 'paid'] }, //Only approved/paid
       periodEnd: { $gte: new Date() }
     }).sort({ periodEnd: 1 });
 
     // Get payment history (ONLY approved or paid, NOT pending)
     const payrollHistory = await Payroll.find({ 
       employeeId: req.user._id,
-      status: { $in: ['approved', 'paid'] } // ← IMPORTANT: Only approved/paid 
+      status: { $in: ['approved', 'paid'] } // Only approved/paid 
     }).sort({ periodEnd: -1 }).limit(10);
 
     res.render('employee-payroll', {

@@ -1,7 +1,5 @@
-// ============================================
 // SHIFT MODEL
 // Handles both employee requests AND admin-posted shifts
-// ============================================
 
 const mongoose = require('mongoose');
 
