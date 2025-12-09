@@ -21,7 +21,7 @@ module.exports = function(passport) {
           return done(null, false, { message: 'Incorrect password' });
         }
         
-        // Success! Return user
+        // Return user
         return done(null, user);
         
       } catch (err) {
@@ -30,7 +30,7 @@ module.exports = function(passport) {
     })
   );
 
-  // SAVE to seession
+  // SAVE to session
   passport.serializeUser((user, done) => {
     done(null, user.id);
   });
