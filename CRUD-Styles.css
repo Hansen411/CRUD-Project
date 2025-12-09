@@ -839,7 +839,26 @@ table th, table td {
 .menu{
     display:none;
 }
-
+    .Login button {
+    background-color: #2F243A;
+    color: white;
+    width: 130px;
+    height: 40px;
+    border-radius: 5px;;
+    font-weight: bold;
+    }
+        .Sign-base {
+    background-color: white;
+    margin: 3em;
+    margin-left: 15%;
+    margin-right:15%;
+    margin-top:3em;
+    padding-top: 1em;
+    padding-bottom: 11em;
+    box-shadow: 0 0 5px 3px #8c6883;
+    border-radius: 5px;
+    height:600px;
+    }
 
 /* Media Queries for Responsive Design */
 
@@ -857,32 +876,14 @@ table th, table td {
     border-radius: 5px;
     height:600px;
     }
-    .Sign-base {
-    background-color: white;
-    margin: 3em;
-    margin-left: 25%;
-    margin-right:25%;
-    margin-top:3em;
-    padding-top: 1em;
-    padding-bottom: 11em;
-    box-shadow: 0 0 5px 3px #8c6883;
-    border-radius: 5px;
-    height:600px;
-    }
+
 
     .user-info input {
     width: 250px;
     height:35px;
     }
 
-    .Login button {
-    background-color: #2F243A;
-    color: white;
-    width: 130px;
-    height: 40px;
-    border-radius: 5px;;
-    font-weight: bold;
-    }
+
      .Sign-Up button {
     background-color: #2F243A;
     color: white;
