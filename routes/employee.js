@@ -263,16 +263,17 @@ router.post('/timeoff/:id/cancel', async (req, res) => {
 // GET /employee/payroll - View payroll
 router.get('/payroll', async (req, res) => {
   try {
-    // Get upcoming payroll period
+    // Get upcoming payroll period (ONLY approved or paid)
     const upcomingPayroll = await Payroll.findOne({ 
       employeeId: req.user._id,
+      status: { $in: ['approved', 'paid'] }, // ← IMPORTANT: Only approved/paid
       periodEnd: { $gte: new Date() }
     }).sort({ periodEnd: 1 });
 
-    // Get payment history (past payroll, approved or paid)
+    // Get payment history (ONLY approved or paid, NOT pending)
     const payrollHistory = await Payroll.find({ 
       employeeId: req.user._id,
-      status: { $in: ['approved', 'paid'] }
+      status: { $in: ['approved', 'paid'] } // ← IMPORTANT: Only approved/paid 
     }).sort({ periodEnd: -1 }).limit(10);
 
     res.render('employee-payroll', {
