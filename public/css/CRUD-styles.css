@@ -48,6 +48,7 @@
     border-radius: 5px;
     margin-left: auto;
     margin-right: auto;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .sign-up {
@@ -114,6 +115,7 @@ footer {
 .ProfilePage{
     text-align: center;
     margin:0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 .prof-header {
     background-color: #d485bd;
@@ -158,6 +160,7 @@ footer {
     border:none;
     font-size: small;
     align-items: end;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .right-card .card-edit button:hover {
@@ -323,7 +326,6 @@ footer {
 
 
 
-
 /* Employee-Dash Styles */
 .Employee-Dash {
     margin:0;
@@ -331,13 +333,14 @@ footer {
     gap:0;
     height: 100%;
     width: auto;
+    font-family: Arial, Helvetica, sans-serif;
     
 }
 
 
 
 .dash {
-    height:100%;
+    height:100vh;
     display: flex;
     width: 100%;
     gap:0;
@@ -379,6 +382,8 @@ footer {
     
 }
 
+
+
 .nav-menu a:hover {
     background-color: #4d4054;
     cursor: pointer;
@@ -406,6 +411,10 @@ footer {
     border-radius: 10px;
     margin:0;
     padding:20px;
+    
+}
+.dashcard:hover {
+  border-left: #d485bd solid 5px;
 }
 
 
@@ -461,11 +470,36 @@ display: flex;
     margin:0;
     padding:0;
     gap:0;
-    height: 100%;
+    height: 100vh;
     width: auto;
+    font-family: Arial, Helvetica, sans-serif;
    
 }
 
+.adminpay{
+    background-color: white;
+    margin:15px;
+    padding:16px;
+    border-radius: 10px;
+    border-left:#2F243A 4px solid;
+    box-shadow: 0 0 5px 3px #8c6883;
+
+}
+
+#adminpayroll{
+    background-color: white;
+    width: 100%;
+    border-collapse: collapse;
+    margin-right: 10px;
+    text-align: left;
+}
+
+#ph-table{
+    background-color: white;
+    width: 100%;
+    border-collapse: collapse;
+    margin-right: 10px;
+}
 .employee-requests{
     background-color: #f4c1e0;
     box-shadow: 0 0 5px 3px #8c6883;
@@ -474,7 +508,9 @@ display: flex;
     
 }
 
-
+#combined-shift-table{
+    background-color: white;
+}
 
 
 .request-summary{
@@ -495,9 +531,7 @@ display: flex;
 .all-requests{
     text-align: left;
     background-color: white;
-    padding-left:16px;
-    padding-right:16px;
-    padding-bottom: 15px;
+    padding:16px;
     border-radius:0 0 10px 10px;
     
 }
@@ -531,7 +565,29 @@ display: flex;
     height: 30px;
     border-radius: 5px;;
     margin-right: 0;
+    font-family: Arial, Helvetica, sans-serif;
     
+}
+.approve{
+    background-color: green;
+    border:none;
+    color: white;
+    width: 80px;
+    height: 30px;
+    border-radius: 5px;;
+    margin-right: 0;
+    
+}
+
+.reject{
+    background-color: #ff4d4d;
+    border:none;
+    color: white;
+    width: 80px;
+    height: 30px;
+    border-radius: 5px;;
+    margin-left: 5px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .decline-btn {
@@ -542,6 +598,7 @@ display: flex;
     height: 30px;
     border-radius: 5px;;
     margin-left: 5px;
+    font-family: Arial, Helvetica, sans-serif;
     
 }
 
@@ -577,6 +634,7 @@ display: flex;
     align-items: end;
     border-radius: 5px;
     font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .make-request button:hover,
@@ -586,10 +644,7 @@ display: flex;
 }
 
 
-/* ------------------------------------
-   MOBILE FIRST (default)
-   Hide STATUS + NOTES (headers + cells)
-------------------------------------- */
+
 #request-table th.col-status,
 #request-table th.col-notes,
 #request-table td.col-status,
@@ -597,7 +652,6 @@ display: flex;
     display: none;
 }
 
-/* Make sure any nth-child fallback also hides them */
 #request-table td:nth-child(4),
 #request-table td:nth-child(5),
 #request-table th:nth-child(4),
@@ -605,7 +659,6 @@ display: flex;
     display: none;
 }
 
-/* Mobile table spacing improvements */
 #request-table th,
 #request-table td {
     padding: 8px;
@@ -656,6 +709,7 @@ display: flex;
     margin-left: auto;
     margin-right:auto;
     font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
 
 }
 
@@ -667,6 +721,7 @@ display: flex;
     border-radius: 5px;
     font-weight: bold;
     color:white;
+    font-family: Arial, Helvetica, sans-serif;
 
 }
 
@@ -722,7 +777,7 @@ display: flex;
     margin-right:8px;
     margin-bottom:4px;
 }
-
+/*calendar not used*/
 .calendar-table {
     width: 100%;
     border-collapse: collapse;
@@ -750,6 +805,7 @@ display: flex;
     margin:0;
     font-size: small;
     padding-left:8px;
+    font-weight: bold;
 }
 .paycard table {
     margin: 0 auto;        /* Centers the table */
@@ -762,6 +818,7 @@ table th, table td {
     padding-right:6px;   /* Optional: spacing for readability */
     padding-left:6px;
 }
+
 
 /* MOBILE-FIRST STYLING */
 
@@ -859,8 +916,12 @@ table th, table td {
     .menu {
     background-color: #2F243A;
     color: white;
-    padding: 1em;
-    width:20%;  
+    padding-right:15px;
+    padding-left:10px;
+    width:auto;  
+    overflow-y: auto;
+    
+    
       
     }
 
@@ -937,6 +998,7 @@ table th, table td {
     }
     .dash{
         height: 100vh;
+        overflow-y: auto;
         
     }
     .mobile-nav{display: none;}
@@ -944,5 +1006,7 @@ table th, table td {
     .all-requests-header button{
         height:30px;
     }
-    
+    .dashboard-content{
+        overflow-y: auto;
+    }
 }

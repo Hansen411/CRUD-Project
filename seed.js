@@ -57,8 +57,8 @@ async function seed() {
     });
 
     const employee3 = await User.create({
-      name: 'Mike Johnson',
-      email: 'mike@example.com',
+      name: 'Ally Hansen',
+      email: 'ally@example.com',
       password: 'password123',
       role: 'employee',
       phone: '555-0004',
@@ -181,76 +181,68 @@ async function seed() {
   
     console.log('Creating payroll records...');
 
-    // John's payroll
-    await Payroll.create({
-      employeeId: employee1._id,
-      periodStart: new Date('2025-11-01'),
-      periodEnd: new Date('2025-11-15'),
-      hoursWorked: 80,
-      hourlyRate: 25.00,
-      grossPay: 2000.00,
-      deductions: 300.00,
-      netPay: 1700.00,
-      status: 'paid',
-      approvedBy: admin._id,
-      paidDate: new Date('2025-11-16')
-    });
+    // CREATE PAYROLL RECORDS
+console.log('Creating payroll records...');
 
-    await Payroll.create({
-      employeeId: employee1._id,
-      periodStart: new Date('2025-11-16'),
-      periodEnd: new Date('2025-11-30'),
-      hoursWorked: 75,
-      hourlyRate: 25.00,
-      grossPay: 1875.00,
-      deductions: 280.00,
-      netPay: 1595.00,
-      status: 'approved',
-      approvedBy: admin._id
-    });
+// Past payroll (paid)
+await Payroll.create({
+  employeeId: employee1._id,
+  periodStart: new Date('2024-11-01'),
+  periodEnd: new Date('2024-11-15'),
+  hoursWorked: 80,
+  hourlyRate: employee1.hourlyRate || 25.00,
+  deductions: 300.00,
+  status: 'paid',
+  approvedBy: admin._id,
+  paidDate: new Date('2024-11-16')
+});
 
-    // Jane's payroll
-    await Payroll.create({
-      employeeId: employee2._id,
-      periodStart: new Date('2025-11-01'),
-      periodEnd: new Date('2025-11-15'),
-      hoursWorked: 85,
-      hourlyRate: 22.00,
-      grossPay: 1870.00,
-      deductions: 275.00,
-      netPay: 1595.00,
-      status: 'paid',
-      approvedBy: admin._id,
-      paidDate: new Date('2025-11-16')
-    });
+await Payroll.create({
+  employeeId: employee2._id,
+  periodStart: new Date('2024-11-01'),
+  periodEnd: new Date('2024-11-15'),
+  hoursWorked: 85,
+  hourlyRate: employee2.hourlyRate || 22.00,
+  deductions: 275.00,
+  status: 'paid',
+  approvedBy: admin._id,
+  paidDate: new Date('2024-11-16')
+});
 
-    // Mike's pending payroll
-    await Payroll.create({
-      employeeId: employee3._id,
-      periodStart: new Date('2025-11-16'),
-      periodEnd: new Date('2025-11-30'),
-      hoursWorked: 78,
-      hourlyRate: 23.50,
-      grossPay: 1833.00,
-      deductions: 270.00,
-      netPay: 1563.00,
-      status: 'pending'
-    });
+// Recent payroll (approved but not paid yet)
+await Payroll.create({
+  employeeId: employee1._id,
+  periodStart: new Date('2024-11-16'),
+  periodEnd: new Date('2024-11-30'),
+  hoursWorked: 75,
+  hourlyRate: employee1.hourlyRate || 25.00,
+  deductions: 280.00,
+  status: 'approved',
+  approvedBy: admin._id
+});
 
-    // Upcoming payroll for all
-    await Payroll.create({
-      employeeId: employee1._id,
-      periodStart: new Date('2025-12-01'),
-      periodEnd: new Date('2025-12-15'),
-      hoursWorked: 0,
-      hourlyRate: 25.00,
-      grossPay: 0,
-      deductions: 0,
-      netPay: 0,
-      status: 'pending'
-    });
+// Pending payroll (needs admin approval)
+await Payroll.create({
+  employeeId: employee3._id,
+  periodStart: new Date('2024-11-16'),
+  periodEnd: new Date('2024-11-30'),
+  hoursWorked: 78,
+  hourlyRate: employee3.hourlyRate || 23.50,
+  deductions: 270.00,
+  status: 'pending'
+});
 
-    console.log('Created payroll records');
+// Upcoming payroll (future, not filled in yet)
+await Payroll.create({
+  employeeId: employee1._id,
+  periodStart: new Date('2024-12-01'),
+  periodEnd: new Date('2024-12-15'),
+  hoursWorked: 0,
+  hourlyRate: employee1.hourlyRate || 25.00,
+  deductions: 0,
+  status: 'pending'
+});
+console.log('Created payroll records');
 
     // ============================================
     // SUMMARY
@@ -261,7 +253,7 @@ async function seed() {
     console.log('   • 3 Employees:');
     console.log('      - john@example.com (password: password123)');
     console.log('      - jane@example.com (password: password123)');
-    console.log('      - mike@example.com (password: password123)');
+    console.log('      - ally@example.com (password: password123)');
     console.log('   • Multiple shifts, time-off requests, and payroll records');
     console.log('\nYou can now test our app\n');
 

@@ -34,7 +34,7 @@ const payrollSchema = new mongoose.Schema({
   },
   grossPay: {
     type: Number,
-    required: true
+    required: false
   },
   deductions: {
     type: Number,
@@ -42,7 +42,7 @@ const payrollSchema = new mongoose.Schema({
   },
   netPay: {
     type: Number,
-    required: true
+    required: false
   },
   status: {
     type: String,
