@@ -411,6 +411,10 @@ footer {
     border-radius: 10px;
     margin:0;
     padding:20px;
+    
+}
+.dashcard:hover {
+  border-left: #d485bd solid 5px;
 }
 
 
