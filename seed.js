@@ -256,7 +256,7 @@ async function seed() {
     // SUMMARY
     // ============================================
     console.log('\nSEED COMPLETE! \n');
-    console.log('📊 Summary:');
+    console.log('Summary:');
     console.log('   • 1 Admin: admin@admin.com (password: admin123)');
     console.log('   • 3 Employees:');
     console.log('      - john@example.com (password: password123)');
