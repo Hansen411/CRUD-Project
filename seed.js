@@ -57,8 +57,8 @@ async function seed() {
     });
 
     const employee3 = await User.create({
-      name: 'Mike Johnson',
-      email: 'mike@example.com',
+      name: 'Ally Hansen',
+      email: 'ally@example.com',
       password: 'password123',
       role: 'employee',
       phone: '555-0004',
@@ -242,11 +242,11 @@ async function seed() {
       employeeId: employee1._id,
       periodStart: new Date('2025-12-01'),
       periodEnd: new Date('2025-12-15'),
-      hoursWorked: 0,
+      hoursWorked: 87,
       hourlyRate: 25.00,
-      grossPay: 0,
-      deductions: 0,
-      netPay: 0,
+      grossPay: 2175.00,
+      deductions: 130.5,
+      netPay: 2044.50,
       status: 'pending'
     });
 
@@ -261,7 +261,7 @@ async function seed() {
     console.log('   • 3 Employees:');
     console.log('      - john@example.com (password: password123)');
     console.log('      - jane@example.com (password: password123)');
-    console.log('      - mike@example.com (password: password123)');
+    console.log('      - ally@example.com (password: password123)');
     console.log('   • Multiple shifts, time-off requests, and payroll records');
     console.log('\nYou can now test our app\n');
 
