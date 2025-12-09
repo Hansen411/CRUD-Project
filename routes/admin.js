@@ -250,5 +250,51 @@ router.post('/timeoff/:id/deny', async (req, res) => {
     res.status(500).send('Error denying request');
   }
 });
+// GET /admin/payroll - View all payroll
+router.get('/payroll', async (req, res) => {
+  try {
+    // Pending payroll needing approval
+    const pendingPayroll = await Payroll.find({ 
+      status: 'pending' 
+    }).populate('employeeId', '_id name email').sort({ periodEnd: -1 });
+
+    // All payroll records
+    const allPayroll = await Payroll.find({})
+      .populate('employeeId', '_id name email')
+      .sort({ periodEnd: -1 });
+
+    res.render('admin-payroll', {
+      user: req.user,
+      pendingPayroll,
+      allPayroll
+    });
+  } catch (err) {
+    console.error('Admin payroll error:', err);
+    res.status(500).send('Error loading payroll');
+  }
+});
+
+// POST /admin/payroll/:id/approve - Approve payroll
+router.post('/payroll/:id/approve', async (req, res) => {
+  try {
+    const payroll = await Payroll.findOne({
+      _id: req.params.id,
+      status: 'pending'
+    });
+
+    if (!payroll) {
+      return res.status(404).send('Payroll not found');
+    }
+
+    payroll.status = 'approved';
+    payroll.approvedBy = req.user._id;
+    await payroll.save();
+
+    res.redirect('/admin/payroll');
+  } catch (err) {
+    console.error('Approve payroll error:', err);
+    res.status(500).send('Error approving payroll');
+  }
+});
 
 module.exports = router;

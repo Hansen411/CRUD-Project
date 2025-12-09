@@ -1,3 +1,21 @@
+// EMPLOYEE ROUTES
+// Employees can view their data and make requests
+
+
+const express = require('express');
+const router = express.Router();
+const { isAuthenticated } = require('../middleware/auth');
+const Shift = require('../models/Shift');
+const TimeOffRequest = require('../models/TimeOffRequest');
+const Payroll = require('../models/Payroll');
+
+// All employee routes require authentication
+router.use(isAuthenticated);
+
+// ============================================
+// DASHBOARD
+// ============================================
+
 // GET /employee/dashboard
 router.get('/dashboard', async (req, res) => {
   try {
@@ -7,12 +25,44 @@ router.get('/dashboard', async (req, res) => {
       status: 'pending'
     });
 
-    // GET /employee/profile - View profile
-router.get('/profile', isAuthenticated, (req, res) => {
+    // Get pending shift requests count
+    const pendingShiftCount = await Shift.countDocuments({ 
+      requestedBy: req.user._id,
+      isEmployeeRequest: true,
+      status: 'pending'
+    });
+
+    // Get next upcoming payroll
+    const nextPayroll = await Payroll.findOne({ 
+      employeeId: req.user._id,
+      periodEnd: { $gte: new Date() }
+    }).sort({ periodEnd: 1 });
+
+    res.render('employee-dashboard', {
+      user: req.user,
+      pendingTimeOffCount,
+      pendingShiftCount,
+      nextPayroll
+    });
+  } catch (err) {
+    console.error('Dashboard error:', err);
+    res.status(500).send('Error loading dashboard');
+  }
+});
+
+
+// PROFILE
+
+
+// GET /employee/profile - View profile
+router.get('/profile', (req, res) => {
   res.render('profile', { user: req.user });
 });
 
-    // GET /employee/shifts - View all shift information
+// SHIFTS
+
+
+// GET /employee/shifts - View all shift information
 router.get('/shifts', async (req, res) => {
   try {
     // Employee's shift requests (they created)
@@ -76,8 +126,8 @@ router.post('/shifts/create-request', async (req, res) => {
       shiftType,
       date,
       requestedBy: req.user._id,
-      postedBy: req.user._id, // Employee is creating it
-      assignedTo: req.user._id, // Pre-assign to themselves
+      postedBy: req.user._id,
+      assignedTo: req.user._id,
       status: 'pending',
       isEmployeeRequest: true
     });
@@ -135,6 +185,9 @@ router.post('/shifts/:id/take', async (req, res) => {
   }
 });
 
+
+// TIME OFF
+
 // GET /employee/timeoff - View time-off requests
 router.get('/timeoff', async (req, res) => {
   try {
@@ -147,7 +200,7 @@ router.get('/timeoff', async (req, res) => {
     const approvedTimeOff = await TimeOffRequest.find({ 
       employeeId: req.user._id,
       status: 'approved',
-      endDate: { $gte: new Date() } // Future time off only
+      endDate: { $gte: new Date() }
     }).sort({ startDate: 1 });
 
     res.render('employee-timeoff', {
@@ -204,20 +257,33 @@ router.post('/timeoff/:id/cancel', async (req, res) => {
   }
 });
 
-    // Get next upcoming payroll
-    const nextPayroll = await Payroll.findOne({ 
-      employeeId: req.user._id,
-      periodEnd: { $gte: new Date() } // Future payroll periods
-    }).sort({ periodEnd: 1 }); // Get the closest one
 
-    res.render('employee-dashboard', {
+// PAYROLL
+
+// GET /employee/payroll - View payroll
+router.get('/payroll', async (req, res) => {
+  try {
+    // Get upcoming payroll period
+    const upcomingPayroll = await Payroll.findOne({ 
+      employeeId: req.user._id,
+      periodEnd: { $gte: new Date() }
+    }).sort({ periodEnd: 1 });
+
+    // Get payment history (past payroll, approved or paid)
+    const payrollHistory = await Payroll.find({ 
+      employeeId: req.user._id,
+      status: { $in: ['approved', 'paid'] }
+    }).sort({ periodEnd: -1 }).limit(10);
+
+    res.render('employee-payroll', {
       user: req.user,
-      pendingTimeOffCount,
-      pendingShiftCount,
-      nextPayroll
+      upcomingPayroll,
+      payrollHistory
     });
   } catch (err) {
-    console.error('Dashboard error:', err);
-    res.status(500).send('Error loading dashboard');
+    console.error('Payroll error:', err);
+    res.status(500).send('Error loading payroll');
   }
 });
+
+module.exports = router;
