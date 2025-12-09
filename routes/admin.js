@@ -272,7 +272,7 @@ router.post('/timeoff/:id/deny', async (req, res) => {
       return res.status(404).send('Request not found');
     }
 
-    // Delete denied requests per your requirement
+    // Delete denied requests 
     await TimeOffRequest.findByIdAndDelete(req.params.id);
 
     res.redirect('/admin/timeoff');
