@@ -56,7 +56,6 @@ const shiftSchema = new mongoose.Schema({
     // true: Employee requested this shift
     // false: Admin posted this as an open shift
   },
-  location: String,
   notes: String
 }, {
   timestamps: true

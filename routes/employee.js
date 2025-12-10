@@ -8,6 +8,7 @@ const { isAuthenticated } = require('../middleware/auth');
 const Shift = require('../models/Shift');
 const TimeOffRequest = require('../models/TimeOffRequest');
 const Payroll = require('../models/Payroll');
+const Todo = require('../models/Todo');
 
 // All employee routes require authentication
 router.use(isAuthenticated);
@@ -17,30 +18,45 @@ router.use(isAuthenticated);
 // GET /employee/dashboard
 router.get('/dashboard', async (req, res) => {
   try {
-    // Get pending time-off requests count
-    const pendingTimeOffCount = await TimeOffRequest.countDocuments({ 
-      employeeId: req.user._id,
-      status: 'pending'
-    });
-
     // Get pending shift requests count
-    const pendingShiftCount = await Shift.countDocuments({ 
+    const pendingShifts = await Shift.countDocuments({
       requestedBy: req.user._id,
-      isEmployeeRequest: true,
       status: 'pending'
     });
 
-    // Get next upcoming payroll
-    const nextPayroll = await Payroll.findOne({ 
+    // Get pending time-off requests count
+    const pendingTimeOff = await TimeOffRequest.countDocuments({
       employeeId: req.user._id,
+      status: 'pending'
+    });
+
+    // Get upcoming shifts
+    const upcomingShifts = await Shift.find({
+      assignedTo: req.user._id,
+      status: { $in: ['approved', 'taken'] },
+      date: { $gte: new Date() }
+    }).sort({ date: 1 }).limit(5);
+
+    // Get next payroll
+    const upcomingPayroll = await Payroll.findOne({
+      employeeId: req.user._id,
+      status: { $in: ['approved', 'paid'] },
       periodEnd: { $gte: new Date() }
     }).sort({ periodEnd: 1 });
 
+    // Get user's todos
+    const todos = await Todo.find({ 
+      userId: req.user._id,
+      completed: false  // Only incomplete tasks
+    }).sort({ createdAt: -1 }).limit(5);  // Latest 5
+
     res.render('employee-dashboard', {
       user: req.user,
-      pendingTimeOffCount,
-      pendingShiftCount,
-      nextPayroll
+      pendingShifts,
+      pendingTimeOff,
+      upcomingShifts,
+      upcomingPayroll,
+      todos: todos  // ADD THIS
     });
   } catch (err) {
     console.error('Dashboard error:', err);
@@ -48,13 +64,91 @@ router.get('/dashboard', async (req, res) => {
   }
 });
 
-
 // PROFILE
 
+// TO DO
 
-// GET /employee/profile - View profile
-router.get('/profile', (req, res) => {
-  res.render('profile', { user: req.user });
+// GET /employee/profile - Update to include todos
+router.get('/profile', async (req, res) => {
+  try {
+    const todos = await Todo.find({ userId: req.user._id }).sort({ createdAt: -1 });
+    res.render('profile', { 
+      user: req.user,
+      todos: todos
+    });
+  } catch (err) {
+    console.error('Profile error:', err);
+    res.status(500).send('Error loading profile');
+  }
+});
+
+// POST /employee/todos/create - Create new task
+router.post('/todos/create', async (req, res) => {
+  try {
+    const { task } = req.body;
+    
+    await Todo.create({
+      userId: req.user._id,
+      task: task
+    });
+    
+    res.redirect('/employee/profile');
+  } catch (err) {
+    console.error('Create todo error:', err);
+    res.status(500).send('Error creating task');
+  }
+});
+
+// POST /employee/todos/:id/update - UPDATE task
+router.post('/todos/:id/update', async (req, res) => {
+  try {
+    const { task } = req.body;
+    
+    await Todo.findOneAndUpdate(
+      { _id: req.params.id, userId: req.user._id },
+      { task: task }
+    );
+    
+    res.redirect('/employee/profile');
+  } catch (err) {
+    console.error('Update todo error:', err);
+    res.status(500).send('Error updating task');
+  }
+});
+
+// POST /employee/todos/:id/toggle - Mark complete/incomplete
+router.post('/todos/:id/toggle', async (req, res) => {
+  try {
+    const todo = await Todo.findOne({ 
+      _id: req.params.id, 
+      userId: req.user._id 
+    });
+    
+    if (todo) {
+      todo.completed = !todo.completed;
+      await todo.save();
+    }
+    
+    res.redirect('/employee/profile');
+  } catch (err) {
+    console.error('Toggle todo error:', err);
+    res.status(500).send('Error toggling task');
+  }
+});
+
+// POST /employee/todos/:id/delete - Delete task
+router.post('/todos/:id/delete', async (req, res) => {
+  try {
+    await Todo.findOneAndDelete({ 
+      _id: req.params.id, 
+      userId: req.user._id 
+    });
+    
+    res.redirect('/employee/profile');
+  } catch (err) {
+    console.error('Delete todo error:', err);
+    res.status(500).send('Error deleting task');
+  }
 });
 
 // SHIFTS

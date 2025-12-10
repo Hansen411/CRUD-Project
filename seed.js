@@ -67,6 +67,33 @@ async function seed() {
 
     console.log('Created 1 admin and 3 employees');
 
+    // make some to dos
+    const Todo = require('./models/Todo');
+
+// After creating users...
+
+console.log('📝 Creating sample todos...');
+
+await Todo.create({
+  userId: employee1._id,
+  task: 'Review shift schedule for next week',
+  completed: false
+});
+
+await Todo.create({
+  userId: employee1._id,
+  task: 'Submit timesheet!',
+  completed: true
+});
+
+await Todo.create({
+  userId: admin._id,
+  task: 'Approve pending time-off requests',
+  completed: false
+});
+
+console.log('Created sample todos');
+
    
     // CREATE employee initiated SHIFT REQUESTS
     
@@ -110,7 +137,6 @@ async function seed() {
       postedBy: admin._id,
       status: 'open',
       isEmployeeRequest: false,
-      location: 'Main Office'
     });
 
     // Open shift 2
@@ -122,10 +148,9 @@ async function seed() {
       postedBy: admin._id,
       status: 'open',
       isEmployeeRequest: false,
-      location: 'Warehouse'
     });
 
-    // Taken shift (Mike took it)
+    // Taken shift (Ally took it)
     await Shift.create({
       shiftType: 'Morning',
       date: new Date('2025-12-22'),
@@ -135,7 +160,6 @@ async function seed() {
       assignedTo: employee3._id,
       status: 'taken',
       isEmployeeRequest: false,
-      location: 'Main Office'
     });
 
     console.log('Created admin-posted shifts');
@@ -166,7 +190,7 @@ async function seed() {
       adminNotes: 'Approved - enjoy!'
     });
 
-    // Mike's pending sick leave
+    // Ally's pending sick leave
     await TimeOffRequest.create({
       employeeId: employee3._id,
       startDate: new Date('2025-12-12'),
