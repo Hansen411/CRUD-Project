@@ -9,6 +9,7 @@ const Shift = require('../models/Shift');
 const TimeOffRequest = require('../models/TimeOffRequest');
 const Payroll = require('../models/Payroll');
 const User = require('../models/User');
+const Todo = require('../models/Todo');
 
 // All admin routes require authentication AND admin role
 router.use(isAuthenticated);
@@ -16,8 +17,6 @@ router.use(isAdmin);
 
 
 // DASHBOARD
-
-
 // GET /admin/dashboard
 router.get('/dashboard', async (req, res) => {
   try {
@@ -33,11 +32,18 @@ router.get('/dashboard', async (req, res) => {
 
     const totalEmployees = await User.countDocuments({ role: 'employee' });
 
+    // Get user's todos
+    const todos = await Todo.find({ 
+      userId: req.user._id,
+      completed: false  // Only incomplete tasks
+    }).sort({ createdAt: -1 }).limit(5);  // Latest 5
+
     res.render('admin-dashboard', {
       user: req.user,
       pendingShifts,
       pendingTimeOff,
-      totalEmployees
+      totalEmployees,
+      todos: todos 
     });
   } catch (err) {
     console.error('Admin dashboard error:', err);
@@ -45,12 +51,75 @@ router.get('/dashboard', async (req, res) => {
   }
 });
 
-
 // PROFILE
 
-// GET /admin/profile
-router.get('/profile', (req, res) => {
-  res.render('profile', { user: req.user });
+// TO DO
+
+// GET /admin/profile 
+router.get('/profile', async (req, res) => {
+  try {
+    const todos = await Todo.find({ userId: req.user._id }).sort({ createdAt: -1 });
+    res.render('profile', { 
+      user: req.user,
+      todos: todos
+    });
+  } catch (err) {
+    console.error('Profile error:', err);
+    res.status(500).send('Error loading profile');
+  }
+});
+
+// POST /admin/todos/create
+router.post('/todos/create', async (req, res) => {
+  try {
+    const { task } = req.body;
+    await Todo.create({ userId: req.user._id, task: task });
+    res.redirect('/admin/profile');
+  } catch (err) {
+    console.error('Create todo error:', err);
+    res.status(500).send('Error creating task');
+  }
+});
+
+// POST /admin/todos/:id/update - UPDATE
+router.post('/todos/:id/update', async (req, res) => {
+  try {
+    const { task } = req.body;
+    await Todo.findOneAndUpdate(
+      { _id: req.params.id, userId: req.user._id },
+      { task: task }
+    );
+    res.redirect('/admin/profile');
+  } catch (err) {
+    console.error('Update todo error:', err);
+    res.status(500).send('Error updating task');
+  }
+});
+
+// POST /admin/todos/:id/toggle
+router.post('/todos/:id/toggle', async (req, res) => {
+  try {
+    const todo = await Todo.findOne({ _id: req.params.id, userId: req.user._id });
+    if (todo) {
+      todo.completed = !todo.completed;
+      await todo.save();
+    }
+    res.redirect('/admin/profile');
+  } catch (err) {
+    console.error('Toggle todo error:', err);
+    res.status(500).send('Error toggling task');
+  }
+});
+
+// POST /admin/todos/:id/delete
+router.post('/todos/:id/delete', async (req, res) => {
+  try {
+    await Todo.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
+    res.redirect('/admin/profile');
+  } catch (err) {
+    console.error('Delete todo error:', err);
+    res.status(500).send('Error deleting task');
+  }
 });
 
 
@@ -272,7 +341,7 @@ router.post('/timeoff/:id/deny', async (req, res) => {
       return res.status(404).send('Request not found');
     }
 
-    // Delete denied requests per your requirement
+    // Delete denied requests 
     await TimeOffRequest.findByIdAndDelete(req.params.id);
 
     res.redirect('/admin/timeoff');

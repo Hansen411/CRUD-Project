@@ -1,16 +1,13 @@
-// ============================================
 // AUTHENTICATION ROUTES
 // Sign up, log in, log out
-// ============================================
 
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const User = require('../models/User');
 
-// ============================================
 // SIGN UP ROUTES
-// ============================================
+
 
 // GET /auth/signup - Show signup page
 router.get('/signup', (req, res) => {
@@ -38,8 +35,8 @@ router.post('/signup', async (req, res) => {
     const newUser = new User({
       name,
       email: email.toLowerCase(),
-      password, // Will be hashed automatically by User model
-      role: role // Automatically set based on email
+      password, 
+      role: role 
     });
 
     await newUser.save();
@@ -65,9 +62,7 @@ router.post('/signup', async (req, res) => {
   }
 });
 
-// ============================================
 // LOGIN ROUTES
-// ============================================
 
 // GET /auth/login - Show login page
 router.get('/login', (req, res) => {
@@ -86,9 +81,7 @@ router.post('/login', passport.authenticate('local', {
   }
 });
 
-// ============================================
 // LOGOUT ROUTE
-// ============================================
 
 // GET /auth/logout - Log out user
 router.get('/logout', (req, res) => {

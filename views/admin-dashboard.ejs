@@ -47,7 +47,7 @@
         </div>
 
         <div class="dashboard-message">
-            <h1>Welcome back, <%= user.name %></h1>
+            <h1>Welcome Back, <%= user.name %></h1>
             <p>Here's a quick overview of your recent activity.</p>
         </div>
 
@@ -88,7 +88,20 @@
             <div class="dashcard">
                 <a href="/admin/profile">
                     <h2>To Do List</h2>
-                    <p>You do not have any active tasks. Check out your Profile for more information.</p>
+                    <% if (todos && todos.length > 0) { %>
+                        <ul style="list-style: none; padding: 0; text-align: left;">
+                            <% todos.forEach(todo => { %>
+                                <li style="margin-bottom: 8px;">
+                                    • <%= todo.task.substring(0, 40) %><%= todo.task.length > 40 ? '...' : '' %>
+                                </li>
+                            <% }) %>
+                        </ul>
+                        <% if (todos.length === 5) { %>
+                            <p style="font-size: 0.9em; margin-top: 10px;">View all in Profile...</p>
+                        <% } %>
+                    <% } else { %>
+                        <p>You do not have any active tasks. Check out your Profile for more information.</p>
+                    <% } %>
                 </a>
             </div>
         </section>

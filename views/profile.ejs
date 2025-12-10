@@ -1,25 +1,247 @@
-<div class="profile-info">
-    <h2>Profile Information</h2>
-    
-    <p><strong>Name:</strong> <%= user.name %></p>
-    <p><strong>Email:</strong> <%= user.email %></p>
-    
-    <!-- CONDITIONAL: Show different status based on role -->
-    <% if (user.role === 'admin') { %>
-        <p><strong>Status:</strong> Administrator</p>
-    <% } else { %>
-        <p><strong>Status:</strong> Employee</p>
-    <% } %>
-    
-    <!-- CONDITIONAL: Show admin-only info -->
-    <% if (user.role === 'admin') { %>
-        <p><strong>Access Level:</strong> Full Access</p>
-        <p><strong>Department:</strong> Management</p>
-    <% } %>
-    
-    <!-- CONDITIONAL: Show employee-only info -->
-    <% if (user.role === 'employee') { %>
-        <p><strong>Hire Date:</strong> <%= new Date(user.hireDate).toLocaleDateString() %></p>
-        <p><strong>Department:</strong> <%= user.department || 'Not Assigned' %></p>
-    <% } %>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>ALA/Profile-Page</title>
+  <link rel="stylesheet" type="text/css" href="/css/CRUD-Styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body class="ProfilePage">
+  <header class="prof-header">
+    <div class="back">
+      <% if (user.role === 'admin') { %>
+        <a href="/admin/dashboard"><i class="arrow left"></i></a>
+      <% } else { %>
+        <a href="/employee/dashboard"><i class="arrow left"></i></a>
+      <% } %>
+    </div>
+    <div>
+      <h1>Profile</h1>
+    </div>
+  </header>
+
+  <section class="prof-info">
+    <section class="profile-left">
+
+      <div class="left-top">
+        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="default profile picture">      
+        <h2>ALA Profile</h2>
+      </div>
+
+      <hr>
+
+      <div class="left-bottom">
+        <h3>Employee Information:</h3>
+        <p><strong>Employee ID:</strong> <%= user._id %></p>
+        <p><strong>Status:</strong> 
+          <% if (user.role === 'admin') { %>
+            Administrator
+          <% } else { %>
+            Employee
+          <% } %>
+        </p>
+        <p><strong>Department:</strong> Information Science</p>
+        <p><strong>Email:</strong> <%= user.email %></p>
+        
+        <% if (user.role === 'employee' && user.hireDate) { %>
+          <p><strong>Hire Date:</strong> <%= new Date(user.hireDate).toLocaleDateString('en-US', { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+        <% } %>
+      </div>
+    </section>
+
+    <section class="profile-right">
+      <div class="right-card">
+        <div class="card-edit">
+          <h3>Personal Information:</h3>
+        </div>
+        <p><strong>Name:</strong> <%= user.name %></p>
+        <p><strong>Date of Birth:</strong> 01/01/1990</p>
+        <p><strong>Address:</strong> 123 Main St, City, State, ZIP</p>
+        <p><strong>Phone:</strong> <%= user.phone || 'Not provided' %></p>
+      </div>
+
+      <div class="right-card">
+        <div class="card-edit">
+          <h3>Emergency Contact:</h3>
+          <div class="button-group">
+            <button id="edit-btn">Edit</button>
+            <button id="save-btn" class="hidden">Save</button>
+            <button id="cancel-btn" class="hidden">Cancel</button>
+          </div>
+        </div>
+
+        <div id="info-view">
+          <p><strong>Name:</strong> <span id="name-text">John Doe</span></p>
+          <p><strong>Relationship:</strong> <span id="rel-text">Spouse</span></p>
+          <p><strong>Email:</strong> <span id="email-text">john@example.com</span></p>
+          <p><strong>Phone:</strong> <span id="phone-text">555-1234</span></p> 
+        </div>
+
+        <div id="info-edit" class="hidden">
+          <label>Name: <input type="text" id="name-input"></label><br><br>
+          <label>Relationship: <input type="text" id="rel-input"></label><br><br>
+          <label>Email: <input type="text" id="email-input"></label><br><br>
+          <label>Phone: <input type="text" id="phone-input"></label><br><br>
+        </div>
+      </div>
+
+      <!-- TO-DO LIST SECTION -->
+      <div class="right-card">
+        <h3>To Do List:</h3>
+        
+        <!-- Add New Task Form -->
+        <form action="<% if (user.role === 'admin') { %>/admin<% } else { %>/employee<% } %>/todos/create" method="POST" style="margin-bottom: 20px;">
+          <input type="text" name="task" placeholder="New task..." required style="width: 70%; padding: 8px;">
+          <button type="submit" style="padding: 8px 15px;">Add</button>
+        </form>
+
+        <!-- Task List -->
+        <% if (todos && todos.length > 0) { %>
+          <ul style="list-style: none; padding: 0;">
+            <% todos.forEach(todo => { %>
+              <li style="margin-bottom: 15px; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                
+                <!-- Edit Mode (hidden by default) -->
+                <form id="edit-form-<%= todo._id %>" action="<% if (user.role === 'admin') { %>/admin<% } else { %>/employee<% } %>/todos/<%= todo._id %>/update" method="POST" style="display: none;">
+                  <input type="text" name="task" value="<%= todo.task %>" required style="width: 100%; padding: 5px; margin-bottom: 5px;">
+                  <button type="submit" style="padding: 5px 10px; background: green; color: white; border: none; cursor: pointer;">Save</button>
+                  <button type="button" onclick="cancelEdit('<%= todo._id %>')" style="padding: 5px 10px; background: gray; color: white; border: none; cursor: pointer;">Cancel</button>
+                </form>
+
+                <!-- View Mode -->
+                <div id="view-<%= todo._id %>">
+                  <!-- Task Text with Strikethrough if Completed -->
+                  <span style="<%= todo.completed ? 'text-decoration: line-through; color: #888;' : '' %>">
+                    <%= todo.task %>
+                  </span>
+                  
+                  <div style="margin-top: 5px;">
+                    <!-- Mark Complete/Incomplete -->
+                    <form action="<% if (user.role === 'admin') { %>/admin<% } else { %>/employee<% } %>/todos/<%= todo._id %>/toggle" method="POST" style="display: inline;">
+                      <button type="submit" style="padding: 5px 10px; background: <%= todo.completed ? '#ffc107' : '#28a745' %>; color: white; border: none; cursor: pointer;">
+                        <%= todo.completed ? 'Undo' : 'Complete' %>
+                      </button>
+                    </form>
+
+                    <!-- Edit Button -->
+                    <button type="button" onclick="showEdit('<%= todo._id %>')" style="padding: 5px 10px; background: #007bff; color: white; border: none; cursor: pointer;">
+                      Edit
+                    </button>
+
+                    <!-- Delete Button -->
+                    <form action="<% if (user.role === 'admin') { %>/admin<% } else { %>/employee<% } %>/todos/<%= todo._id %>/delete" method="POST" style="display: inline;">
+                      <button type="submit" style="padding: 5px 10px; background: #dc3545; color: white; border: none; cursor: pointer;">
+                        Delete
+                      </button>
+                    </form>
+                  </div>
+                </div>
+
+              </li>
+            <% }) %>
+          </ul>
+        <% } else { %>
+          <p>Congratulations, you have no open tasks!</p>
+        <% } %>
+      </div>
+      <!-- END TO-DO LIST SECTION -->
+
+    </section>
+  </section>
+
+<script>
+// ========== EMERGENCY CONTACT SCRIPT ==========
+const view = document.getElementById("info-view");
+const edit = document.getElementById("info-edit");
+
+const nameText = document.getElementById("name-text");
+const relText = document.getElementById("rel-text");
+const emailText = document.getElementById("email-text");
+const phoneText = document.getElementById("phone-text");
+
+const nameInput = document.getElementById("name-input");
+const relInput = document.getElementById("rel-input");
+const emailInput = document.getElementById("email-input");
+const phoneInput = document.getElementById("phone-input");
+
+const editBtn = document.getElementById("edit-btn");
+const saveBtn = document.getElementById("save-btn");
+const cancelBtn = document.getElementById("cancel-btn");
+
+// Load from localStorage on page load
+document.addEventListener("DOMContentLoaded", function () {
+    const savedData = JSON.parse(localStorage.getItem("emergencyContact_<%= user._id %>"));
+
+    if (savedData) {
+        nameText.textContent = savedData.name;
+        relText.textContent = savedData.relationship;
+        emailText.textContent = savedData.email;
+        phoneText.textContent = savedData.phone;
+    }
+});
+
+// Edit button
+editBtn.onclick = () => {
+    nameInput.value = nameText.textContent;
+    relInput.value = relText.textContent;
+    emailInput.value = emailText.textContent;
+    phoneInput.value = phoneText.textContent;
+
+    view.classList.add("hidden");
+    edit.classList.remove("hidden");
+
+    editBtn.classList.add("hidden");
+    saveBtn.classList.remove("hidden");
+    cancelBtn.classList.remove("hidden");
+};
+
+// Save button
+saveBtn.onclick = () => {
+    nameText.textContent = nameInput.value;
+    relText.textContent = relInput.value;
+    emailText.textContent = emailInput.value;
+    phoneText.textContent = phoneInput.value;
+
+    const dataToSave = {
+        name: nameInput.value,
+        relationship: relInput.value,
+        email: emailInput.value,
+        phone: phoneInput.value
+    };
+
+    localStorage.setItem("emergencyContact_<%= user._id %>", JSON.stringify(dataToSave));
+
+    view.classList.remove("hidden");
+    edit.classList.add("hidden");
+
+    saveBtn.classList.add("hidden");
+    cancelBtn.classList.add("hidden");
+    editBtn.classList.remove("hidden");
+};
+
+// Cancel button
+cancelBtn.onclick = () => {
+    view.classList.remove("hidden");
+    edit.classList.add("hidden");
+
+    saveBtn.classList.add("hidden");
+    cancelBtn.classList.add("hidden");
+    editBtn.classList.remove("hidden");
+};
+
+// TO-DO LIST 
+function showEdit(todoId) {
+  document.getElementById('view-' + todoId).style.display = 'none';
+  document.getElementById('edit-form-' + todoId).style.display = 'block';
+}
+
+function cancelEdit(todoId) {
+  document.getElementById('view-' + todoId).style.display = 'block';
+  document.getElementById('edit-form-' + todoId).style.display = 'none';
+}
+</script>
+
+</body>
+
+</html>

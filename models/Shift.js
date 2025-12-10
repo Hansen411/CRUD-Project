@@ -1,7 +1,5 @@
-// ============================================
 // SHIFT MODEL
 // Handles both employee requests AND admin-posted shifts
-// ============================================
 
 const mongoose = require('mongoose');
 
@@ -58,7 +56,6 @@ const shiftSchema = new mongoose.Schema({
     // true: Employee requested this shift
     // false: Admin posted this as an open shift
   },
-  location: String,
   notes: String
 }, {
   timestamps: true

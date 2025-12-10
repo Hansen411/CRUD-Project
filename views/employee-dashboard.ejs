@@ -16,7 +16,6 @@
                 <h3>Dashboard</h3>
            
                 <ul>
-                    <!-- CHANGED: All links to backend routes -->
                     <li><a href="/employee/dashboard">Dashboard</a></li>
                     <li><a href="/employee/profile">Profile</a></li>
                     <li><a href="/employee/shifts">Shift Requests</a></li>
@@ -34,11 +33,10 @@
           
             <div class="dropdown">
                 <button class="dropbtn" aria-label="Toggle menu">
-                &#9776; <!-- Hamburger icon -->
+                &#9776;
                 </button>
                 
                 <div class="dropdown-content">
-                     <!-- CHANGED: Mobile nav links -->
                      <a href="/employee/dashboard">Dashboard</a>
                      <a href="/employee/profile">Profile</a>
                      <a href="/employee/shifts">Shift Requests</a>
@@ -51,7 +49,6 @@
         </div>
 
         <div class="dashboard-message">
-            <!-- CHANGED: Use EJS to display user name from backend -->
             <h1>Welcome back, <%= user.name %></h1>
             <p>Here's a quick overview of your recent activity.</p>
         </div>
@@ -62,15 +59,13 @@
                     <div class="dashcard">
                         <a href="/employee/timeoff">
                             <h2>Time Off Requests</h2>
-                            <!-- CHANGED: Use EJS to display pending count -->
-                            <p>You have <%= pendingTimeOffCount %> pending request<%= pendingTimeOffCount !== 1 ? 's' : '' %> to review.</p>
+                            <p>You have <%= pendingTimeOff %> pending request<%= pendingTimeOff !== 1 ? 's' : '' %> to review.</p>
                         </a>
                     </div>
                     <div class="dashcard">
                         <a href="/employee/shifts">
                         <h2>Shift Requests</h2>
-                        <!-- CHANGED: Use EJS to display pending shift count -->
-                        <p>You have <%= pendingShiftCount %> pending shift request<%= pendingShiftCount !== 1 ? 's' : '' %>.</p>
+                        <p>You have <%= pendingShifts %> pending shift request<%= pendingShifts !== 1 ? 's' : '' %>.</p>
                         </a>
                     </div>
                 </div>  
@@ -79,14 +74,14 @@
                     <a href="/employee/payroll">
                         <h2>Upcoming Payroll</h2>
                         <div id="payweek">
-                            <% if (nextPayroll) { %>
+                            <% if (upcomingPayroll) { %>
                                 <div>
                                     <p>Start Date:</p>
-                                    <p><%= new Date(nextPayroll.periodStart).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                                    <p><%= new Date(upcomingPayroll.periodStart).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
                                 </div>
                                 <div>
                                     <p>End Date:</p>
-                                    <p><%= new Date(nextPayroll.periodEnd).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                                    <p><%= new Date(upcomingPayroll.periodEnd).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
                                 </div>
                             <% } else { %>
                                 <p>No upcoming payroll scheduled.</p>
@@ -99,14 +94,25 @@
             <div class="dashcard">
                 <a href="/employee/profile">
                     <h2>To Do List</h2>
-                    <p>You do not have any active tasks. Check out your Profile for more information.</p>
+                    <% if (todos && todos.length > 0) { %>
+                        <ul style="list-style: none; padding: 0; text-align: left;">
+                            <% todos.forEach(todo => { %>
+                                <li style="margin-bottom: 8px;">
+                                    • <%= todo.task.substring(0, 40) %><%= todo.task.length > 40 ? '...' : '' %>
+                                </li>
+                            <% }) %>
+                        </ul>
+                        <% if (todos.length === 5) { %>
+                            <p style="font-size: 0.9em; margin-top: 10px;">View all in Profile...</p>
+                        <% } %>
+                    <% } else { %>
+                        <p>You do not have any active tasks. Check out your Profile for more information.</p>
+                    <% } %>
                 </a>
             </div>
         </section>
 
     </section>
-
-<!-- REMOVED All localStorage JavaScript -->
 
     </div>
 </body>
